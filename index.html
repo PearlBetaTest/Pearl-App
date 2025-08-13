@@ -762,33 +762,24 @@
     const consent = document.getElementById('consent').checked;
 
     console.log({ name, whatsapp, item, description, budget, urgency, consent });
-// Frontend code using GET request with URL parameters
-try {
-    const params = new URLSearchParams({
-        name: name,
-        whatsapp: whatsapp,
-        item: item,
-        description: description,
-        budget: budget,
-        urgency: urgency,
-        consent: consent,
-        timestamp: new Date().toISOString(),
-        id: Date.now().toString()
-    });
 
-    const response = await fetch(`https://script.google.com/macros/s/AKfycbxE9c56JeORemait3B4MWTBs-LRnAzw1QbUx1YnEuVTz0IoKnz6X5DLW7kl2Wm-5wZm/exec?${params}`, {
-        method: "GET"
-    });
+    try {
+        // Example async request – replace the URL with your API endpoint
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwcve4uT9-icSoJyPjn57oa39X0ud3Z_yVVpUiOXgwunTcJ5q8sTVTS05kqWHF5WHoJ/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, whatsapp, item, description, budget, urgency, consent })
+        });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const result = await response.json();
+        console.log("Submission successful:", result);
+
+        // Optionally clear the form after successful submission
+        document.getElementById("request-form").reset();
+
+    } catch (error) {
+        console.error("Error submitting request:", error);
     }
-    
-    const data = await response.json();
-    console.log('Success:', data);
-} catch (error) {
-    console.error('Error:', error);
-}
 });
 
 
