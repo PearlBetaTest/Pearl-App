@@ -767,7 +767,7 @@
         // Example async request – replace the URL with your API endpoint
         const response = await fetch("https://script.google.com/macros/s/AKfycbz0hIhmtVypwX6oMlGtWlHj3OuStpysO6wuEn0QN8INVwey2q_zzESZC7i1sXhUc6AF/exec", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "text/plain" },
             body: JSON.stringify({ name, whatsapp, item, description, budget, urgency, consent })
         });
 
