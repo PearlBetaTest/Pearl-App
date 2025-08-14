@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pearl - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: #1565c0;
+            margin-bottom: 40px;
+        }
+
+        .header-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+
+        .header-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            color: #0d47a1;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .login-card {
+            max-width: 400px;
+            margin: 5rem auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:hover {
+            background: #43a047;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+            box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-danger {
+            background: #f44336;
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+            box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1976d2;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .request-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .request-id {
+            font-weight: 600;
+            color: #1976d2;
+            font-size: 1.1em;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-new { background: #fff3cd; color: #856404; }
+        .status-assigned { background: #d1ecf1; color: #0c5460; }
+        .status-sourcing { background: #d4edda; color: #155724; }
+        .status-options-found { background: #e2e3e5; color: #383d41; }
+        .status-paid { background: #cce5ff; color: #004085; }
+        .status-completed { background: #d1ecf1; color: #0c5460; }
+
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .description-box {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .actions select {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .actions select:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .whatsapp-link {
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-link:hover {
+            background: #128c7e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+
+        .team-section {
+            border-top: 2px solid #e1e5e9;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .team-input-row {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .team-input-row input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .team-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1976d2;
+            border: 2px solid #e1e5e9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .remove-member {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .remove-member:hover {
+            background: #d32f2f;
+            transform: scale(1.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header-title {
+                font-size: 2em;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .request-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions select,
+            .whatsapp-link {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .team-input-row {
+                flex-direction: column;
+            }
+
+            .team-input-row input {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-number {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="container">
+            <div class="header">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px;">
+                    <div style="width: 65px; height: 60px;">
+                        <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
+                    </div>
+                    <h1 class="header-title">Pearl</h1>
+                </div>
+                <p class="header-subtitle">Admin Dashboard</p>
+            </div>
+            
+            <div class="card login-card">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #1976d2;">Admin Access</h2>
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" placeholder="Enter admin password">
+                </div>
+                <button onclick="checkAdminPassword()" class="btn btn-full">Login</button>
+                <div id="login-error" class="error hidden">Incorrect password. Please try again.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="hidden">
+        <div class="container">
+            <div class="header">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px;">
+                    <div style="width: 65px; height: 60px;">
+                        <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
+                    </div>
+                    <h1 class="header-title">Pearl</h1>
+                </div>
+                <p class="header-subtitle">Admin Dashboard - Request Management</p>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-requests">-</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pending-requests">-</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="active-requests">-</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-requests">-</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Team Management -->
+            <div class="card">
+                <h3 style="color: #1976d2; margin-bottom: 15px;">Team Management</h3>
+                <div class="team-input-row">
+                    <input type="text" id="new-member" placeholder="Enter team member name">
+                    <button onclick="addTeamMember()" class="btn">Add Member</button>
+                </div>
+                <div id="team-list" class="team-list">
+                    <div class="loading">Loading team members...</div>
+                </div>
+            </div>
+
+            <!-- Requests Section -->
+            <div class="card">
+                <h3 style="color: #1976d2; margin-bottom: 20px;">All Requests</h3>
+                <div id="requests-container">
+                    <div class="loading">Loading requests...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="config.js"></script>
+    <script>
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global state
+        let isAdminAuthenticated = false;
+        let requests = [];
+        let teamMembers = [];
+
+        // Authentication
+        function checkAdminPassword() {
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdminAuthenticated = true;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('login-error').classList.add('hidden');
+                initializeDashboard();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('login-error').classList.add('hidden');
+                }, 5000);
+            }
+        }
+
+        // Enter key support for login
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('admin-password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAdminPassword();
+                }
+            });
+        });
+
+        // Initialize dashboard data
+        async function initializeDashboard() {
+            try {
+                await Promise.all([
+                    loadRequests(),
+                    loadTeamMembers()
+                ]);
+            } catch (error) {
+                console.error('Error initializing dashboard:', error);
+                showError('Failed to load dashboard data');
+            }
+        }
+
+        // Load requests from Firestore
+        function loadRequests() {
+            return new Promise((resolve, reject) => {
+                db.collection('requests')
+                    .orderBy('timestamp', 'desc')
+                    .onSnapshot((snapshot) => {
+                        requests = [];
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            requests.push({
+                                id: doc.id,
+                                ...data,
+                                timestamp: data.timestamp?.toDate() || new Date()
+                            });
+                        });
+                        updateRequestsDisplay();
+                        updateStats();
+                        resolve();
+                    }, (error) => {
+                        console.error('Error loading requests:', error);
+                        reject(error);
+                    });
+            });
+        }
+
+        // Load team members from Firestore
+        function loadTeamMembers() {
+            return new Promise((resolve, reject) => {
+                db.collection('teamMembers')
+                    .onSnapshot((snapshot) => {
+                        teamMembers = ['You']; // Default member
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            if (data.name && !teamMembers.includes(data.name)) {
+                                teamMembers.push(data.name);
+                            }
+                        });
+                        updateTeamDisplay();
+                        resolve();
+                    }, (error) => {
+                        console.error('Error loading team members:', error);
+                        reject(error);
+                    });
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('total-requests').textContent = requests.length;
+            document.getElementById('pending-requests').textContent = requests.filter(r => r.status === 'new' || !r.status).length;
+            
+            const activeStatuses = ['assigned', 'sourcing', 'options-found', 'paid'];
+            document.getElementById('active-requests').textContent = requests.filter(r => activeStatuses.includes(r.status)).length;
+            document.getElementById('completed-requests').textContent = requests.filter(r => r.status === 'completed').length;
+        }
+
+        // Update requests display
+        function updateRequestsDisplay() {
+            const container = document.getElementById('requests-container');
+            
+            if (requests.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No Requests Yet</h3>
+                        <p>Requests will appear here as they come in from customers.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = requests.map(req => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <span class="request-id">${req.id}</span>
+                        <span class="status-badge status-${req.status || 'new'}">${(req.status || 'new').replace('-', ' ')}</span>
+                    </div>
+                    
+                    <div class="request-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${req.name || 'Unknown'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Item Requested</div>
+                            <div class="detail-value">${req.item || 'No item specified'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">WhatsApp</div>
+                            <div class="detail-value">${req.whatsapp || 'Not provided'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Budget Range</div>
+                            <div class="detail-value">${req.budget || 'Not specified'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Urgency</div>
+                            <div class="detail-value">${req.urgency || 'Flexible'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Assigned To</div>
+                            <div class="detail-value">${req.assignedTo || 'Unassigned'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Date Submitted</div>
+                            <div class="detail-value">${req.timestamp.toLocaleDateString()}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Time Submitted</div>
+                            <div class="detail-value">${req.timestamp.toLocaleTimeString()}</div>
+                        </div>
+                    </div>
+                    
+                    ${req.description ? `
+                        <div class="description-box">
+                            <strong>Additional Details:</strong><br>
+                            ${req.description}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="actions">
+                        <select onchange="assignRequest('${req.id}', this.value)">
+                            <option value="">Assign to team member...</option>
+                            ${teamMembers.map(member => `<option value="${member}" ${req.assignedTo === member ? 'selected' : ''}>${member}</option>`).join('')}
+                        </select>
+                        <select onchange="updateStatus('${req.id}', this.value)">
+                            <option value="new" ${(req.status === 'new' || !req.status) ? 'selected' : ''}>New</option>
+                            <option value="assigned" ${req.status === 'assigned' ? 'selected' : ''}>Assigned</option>
+                            <option value="sourcing" ${req.status === 'sourcing' ? 'selected' : ''}>Sourcing</option>
+                            <option value="options-found" ${req.status === 'options-found' ? 'selected' : ''}>Options Found</option>
+                            <option value="paid" ${req.status === 'paid' ? 'selected' : ''}>Paid</option>
+                            <option value="completed" ${req.status === 'completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                                            
+                        ${req.whatsapp ? `
+                            <a href="https://wa.me/${req.whatsapp.replace(/[^\d]/g, '')}?text=Hi ${encodeURIComponent(req.name || 'there')}! This is regarding your Pearl request ${req.id} for '${encodeURIComponent(req.item)}'. " class="whatsapp-link" target="_blank">
+                                📱 Contact Customer
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update team members display
+        function updateTeamDisplay() {
+            const container = document.getElementById('team-list');
+            container.innerHTML = teamMembers.map((member, index) => `
+                <div class="team-member">
+                    <span>${member}</span>
+                    ${member !== 'You' ? `<button class="remove-member" onclick="removeTeamMember('${member}')" title="Remove ${member}">×</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Add team member
+        async function addTeamMember() {
+            const memberName = document.getElementById('new-member').value.trim();
+            if (!memberName) {
+                showError('Please enter a team member name');
+                return;
+            }
+
+            if (teamMembers.includes(memberName)) {
+                showError('Team member already exists');
+                return;
+            }
+
+            try {
+                await db.collection('teamMembers').add({ 
+                    name: memberName,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                document.getElementById('new-member').value = '';
+                showSuccess(`${memberName} has been added to the team`);
+            } catch (error) {
+                console.error('Error adding team member:', error);
+                showError('Failed to add team member. Please try again.');
+            }
+        }
+
+        // Remove team member
+        async function removeTeamMember(memberName) {
+            if (!confirm(`Remove ${memberName} from the team?`)) return;
+
+            try {
+                const snapshot = await db.collection('teamMembers')
+                    .where('name', '==', memberName)
+                    .get();
+
+                const batch = db.batch();
+                snapshot.forEach((doc) => {
+                    batch.delete(doc.ref);
+                });
+
+                await batch.commit();
+                showSuccess(`${memberName} has been removed from the team`);
+            } catch (error) {
+                console.error('Error removing team member:', error);
+                showError('Failed to remove team member. Please try again.');
+            }
+        }
+
+        // Assign request to team member
+        async function assignRequest(requestId, memberName) {
+            if (!memberName) return;
+
+            try {
+                await db.collection('requests').doc(requestId).update({
+                    assignedTo: memberName,
+                    status: 'assigned',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showSuccess(`Request assigned to ${memberName}`);
+            } catch (error) {
+                console.error('Error assigning request:', error);
+                showError('Failed to assign request. Please try again.');
+            }
+        }
+
+        // Update request status
+        async function updateStatus(requestId, newStatus) {
+            if (!newStatus) return;
+
+            try {
+                await db.collection('requests').doc(requestId).update({
+                    status: newStatus,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                const statusLabels = {
+                    'new': 'New',
+                    'assigned': 'Assigned',
+                    'sourcing': 'Sourcing',
+                    'options-found': 'Options Found',
+                    'paid': 'Paid',
+                    'completed': 'Completed'
+                };
+
+                showSuccess(`Status updated to ${statusLabels[newStatus] || newStatus}`);
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showError('Failed to update status. Please try again.');
+            }
+        }
+
+        // Utility functions
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            document.querySelector('.container').prepend(errorDiv);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            document.querySelector('.container').prepend(successDiv);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        // Enter key support for adding team members
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('new-member').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTeamMember();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

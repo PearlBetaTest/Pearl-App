@@ -346,7 +346,6 @@
             <button class="nav-btn active" data-section="user">Submit Request</button>
             <button class="nav-btn" data-section="track">Track Request</button>
             <button class="nav-btn" data-section="how-it-works">How It Works</button>
-            <button class="nav-btn" data-section="admin">Admin Dashboard</button>
         </div>
     </div>
 
@@ -410,15 +409,15 @@
                     </select>
                 </div>
 
-<div class="form-group" style="width: 100%;">
-    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-start;">
-        <input type="checkbox" id="consent" required>
-        <label for="consent" style="cursor: pointer; margin: 0;">
-            I agree to be contacted by a Pearl representative regarding my request 
-            <span style="color: red;">*</span>
-        </label>
-    </div>
-</div>
+                <div class="form-group" style="width: 100%;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-start;">
+                        <input type="checkbox" id="consent" required>
+                        <label for="consent" style="cursor: pointer; margin: 0;">
+                            I agree to be contacted by a Pearl representative regarding my request 
+                            <span style="color: red;">*</span>
+                        </label>
+                    </div>
+                </div>
 
                 <button type="submit" class="btn" onclick="submitRequest(event)">Submit Request</button>
                 <p style="margin-top: 15px; font-size: 14px; color: #666; text-align: center;">
@@ -509,107 +508,18 @@
             </div>
         </div>
 
-        <!-- Admin Dashboard -->
-        <div id="admin-section" class="card hidden">
-            <h2>Admin Dashboard</h2>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="total-requests">0</div>
-                    <div class="stat-label">Total Requests</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="pending-requests">0</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="active-requests">0</div>
-                    <div class="stat-label">In Progress</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="completed-requests">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <h3>Team Members</h3>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <input type="text" id="new-member" placeholder="Add team member name" style="flex: 1; min-width: 200px;">
-                    <button onclick="addTeamMember()" class="btn" style="width: auto; padding: 12px 20px;">Add Member</button>
-                </div>
-                <div id="team-list" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <span class="status-badge status-new">You</span>
-                </div>
-            </div>
-
-            <h3>All Requests</h3>
-            <div id="admin-requests">
-                <p style="color: #666; text-align: center; padding: 20px;">No requests yet. Requests will appear here as they come in.</p>
-            </div>
-        </div>
     </div>
 
-    <!-- Admin Login Modal -->
-    <div id="admin-login-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h2>Admin Access</h2>
-            <div class="form-group">
-                <label for="admin-password">Password</label>
-                <input type="password" id="admin-password" placeholder="Enter admin password">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="checkAdminPassword()" class="btn" style="flex: 1;">Login</button>
-                <button onclick="closeAdminLogin()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
-            </div>
-            <div id="admin-error" class="hidden" style="color: red; margin-top: 10px; text-align: center;">Incorrect password</div>
-        </div>
-    </div>
-
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="config.js"></script>
+    
     <script>
-        // Global state
-        let requests = [];
-        let teamMembers = ['You'];
-        let requestIdCounter = 1000;
-        let isAdminAuthenticated = false;
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+    <script>
 
-        // Sample data for demo
-        function initializeSampleData() {
-            requests = [
-                {
-                    id: 'REQ-1001',
-                    name: 'Sarah Wanjiku',
-                    whatsapp: '+254712345678',
-                    email: '',
-                    item: 'iPhone 15 Pro Max charger',
-                    description: 'Original Apple charger, USB-C to Lightning, white color preferred',
-                    budget: '1000-5000',
-                    urgency: 'week',
-                    status: 'assigned',
-                    assignedTo: 'You',
-                    timestamp: new Date('2025-08-10T10:30:00'),
-                    userType: 'guest'
-                },
-                {
-                    id: 'REQ-1002',
-                    name: 'James Mwangi',
-                    whatsapp: '+254798765432',
-                    email: '',
-                    item: 'Vitamix blender',
-                    description: 'High-speed blender for smoothies, any Vitamix model is fine',
-                    budget: '15000-50000',
-                    urgency: 'flexible',
-                    status: 'new',
-                    assignedTo: '',
-                    timestamp: new Date('2025-08-11T14:20:00'),
-                    userType: 'guest'
-                }
-            ];
-            updateAdminDashboard();
-        }
-
-        // Initialize with sample data
-        initializeSampleData();
 
         // Navigation handling
         document.addEventListener('DOMContentLoaded', function() {
@@ -620,17 +530,9 @@
                     e.preventDefault();
                     const section = this.getAttribute('data-section');
                     
-                    if (section === 'admin') {
-                        if (isAdminAuthenticated) {
-                            showSection('admin');
-                            setActiveButton(this);
-                        } else {
-                            showAdminLogin();
-                        }
-                    } else {
                         showSection(section);
                         setActiveButton(this);
-                    }
+                    
                 });
             });
         });
@@ -641,148 +543,84 @@
         }
 
         function showSection(sectionName) {
-            // Hide all sections
-            const sections = ['user', 'track', 'how-it-works', 'admin'];
-            sections.forEach(section => {
-                document.getElementById(section + '-section').classList.add('hidden');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionName + '-section').classList.remove('hidden');
-        }
+    // Hide all sections
+    const sections = ['user', 'track', 'how-it-works'];
+    sections.forEach(section => {
+        const el = document.getElementById(section + '-section');
+        if (el) el.classList.add('hidden');
+    });
+    
+    // Show selected section
+    const selectedEl = document.getElementById(sectionName + '-section');
+    if (selectedEl) selectedEl.classList.remove('hidden');
+}
 
-        function showAdminLogin() {
-            document.getElementById('admin-login-modal').classList.remove('hidden');
-            document.getElementById('admin-password').focus();
-        }
 
-        function closeAdminLogin() {
-            document.getElementById('admin-login-modal').classList.add('hidden');
-            document.getElementById('admin-password').value = '';
-            document.getElementById('admin-error').classList.add('hidden');
-        }
 
-        function checkAdminPassword() {
-            const password = document.getElementById('admin-password').value;
-            if (password === 'Betatestv1') {
-                isAdminAuthenticated = true;
-                closeAdminLogin();
-                showSection('admin');
-                
-                // Set admin button as active
-                const adminButton = document.querySelector('.nav-btn[data-section="admin"]');
-                setActiveButton(adminButton);
-            } else {
-                document.getElementById('admin-error').classList.remove('hidden');
+        async function submitRequest(e) {
+             e.preventDefault(); // Stop form from reloading page
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const item = document.getElementById('item').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const budget = document.getElementById('budget').value.trim();
+            const urgency = document.getElementById('urgency').value.trim();
+            const consent = document.getElementById('consent').checked;
+
+            // Field validation
+            if (!name) {
+                alert("Please enter your name.");
+                return;
+            }
+            if (!whatsapp) {
+                alert("Please enter your WhatsApp number.");
+                return;
+            }
+            if (!/^\d+$/.test(whatsapp)) {
+                alert("WhatsApp number must contain only numbers.");
+                return;
+            }
+            if (!item) {
+                alert("Please enter the item you are looking for.");
+                return;
+            }
+            if (!consent) {
+                alert("You must agree to be contacted!");
+                return;
+            }
+
+            try {
+                // Add document to Firestore
+                const docRef = await db.collection("requests").add({
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                name,
+                whatsapp,
+                item,
+                description,
+                budget,
+                urgency,
+                consent
+                });
+
+                // Show the unique tracking ID to the user
+                alert(`Request submitted successfully! Your request ID is: ${docRef.id}\n\nPlease save this ID for tracking.`);
+
+                // Reset form
+                document.getElementById("request-form").reset();
+
+            } catch (error) {
+                console.error("Error submitting request:", error);
+                alert("There was an error. Check console for details.");
             }
         }
-
-        function generateRequestId() {
-            return 'REQ-' + (++requestIdCounter);
-        }
-
-async function submitRequest(e) {
-  e.preventDefault(); // Stop form from reloading page
-
-  // Get form values
-  const name = document.getElementById('name').value.trim();
-  const whatsapp = document.getElementById('whatsapp').value.trim();
-  const item = document.getElementById('item').value.trim();
-  const description = document.getElementById('description').value.trim();
-  const budget = document.getElementById('budget').value.trim();
-  const urgency = document.getElementById('urgency').value.trim();
-  const consent = document.getElementById('consent').checked;
-
-  // Field validation
-  if (!name) {
-    alert("Please enter your name.");
-    return;
-  }
-  if (!whatsapp) {
-    alert("Please enter your WhatsApp number.");
-    return;
-  }
-  if (!/^\d+$/.test(whatsapp)) {
-    alert("WhatsApp number must contain only numbers.");
-    return;
-  }
-  if (!item) {
-    alert("Please enter the item you are looking for.");
-    return;
-  }
-  if (!consent) {
-    alert("You must agree to be contacted!");
-    return;
-  }
-
-  try {
-    // Add document to Firestore
-    const docRef = await db.collection("requests").add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      name,
-      whatsapp,
-      item,
-      description,
-      budget,
-      urgency,
-      consent
-    });
-
-    // Show the unique tracking ID to the user
-    alert(`Request submitted successfully! Your request ID is: ${docRef.id}\n\nPlease save this ID for tracking.`);
-
-    // Reset form
-    document.getElementById("request-form").reset();
-
-  } catch (error) {
-    console.error("Error submitting request:", error);
-    alert("There was an error. Check console for details.");
-  }
-}
 
 
         function resetForm() {
             location.reload();
         }
 
-        function trackRequest() {
-            const searchTerm = document.getElementById('track-id').value.toLowerCase();
-            const results = requests.filter(req => 
-                req.id.toLowerCase().includes(searchTerm) || 
-                req.whatsapp.includes(searchTerm)
-            );
-            
-            const resultsDiv = document.getElementById('track-results');
-            
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '<p style="text-align: center; color: #666;">No requests found. Please check your Request ID or WhatsApp number.</p>';
-            } else {
-                resultsDiv.innerHTML = results.map(req => `
-                    <div class="request-item">
-                        <div class="request-header">
-                            <span class="request-id">${req.id}</span>
-                            <span class="status-badge status-${req.status}">${req.status.replace('-', ' ')}</span>
-                        </div>
-                        <div class="request-details">
-                            <div class="detail-item">
-                                <div class="detail-label">Item</div>
-                                <div class="detail-value">${req.item}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Status</div>
-                                <div class="detail-value">${getStatusDescription(req.status)}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Submitted</div>
-                                <div class="detail-value">${req.timestamp.toLocaleDateString()}</div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            resultsDiv.classList.remove('hidden');
-        }
+        
 
         function getStatusDescription(status) {
             const descriptions = {
@@ -796,146 +634,64 @@ async function submitRequest(e) {
             return descriptions[status] || status;
         }
 
-        function updateAdminDashboard() {
-            // Update stats
-            document.getElementById('total-requests').textContent = requests.length;
-            document.getElementById('pending-requests').textContent = requests.filter(r => r.status === 'new').length;
-            document.getElementById('active-requests').textContent = requests.filter(r => ['assigned', 'sourcing', 'options-found', 'paid'].includes(r.status)).length;
-            document.getElementById('completed-requests').textContent = requests.filter(r => r.status === 'completed').length;
-            
-            // Update requests list
-            const adminRequests = document.getElementById('admin-requests');
-            
-            if (requests.length === 0) {
-                adminRequests.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">No requests yet. Requests will appear here as they come in.</p>';
-                return;
-            }
-            
-            adminRequests.innerHTML = requests.map(req => `
-                <div class="request-item">
-                    <div class="request-header">
-                        <span class="request-id">${req.id}</span>
-                        <span class="status-badge status-${req.status}">${req.status.replace('-', ' ')}</span>
+        async function trackRequest() {
+    const searchTerm = document.getElementById('track-id').value.trim().toLowerCase();
+    const resultsDiv = document.getElementById('track-results');
+    resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">Searching...</p>';
+    resultsDiv.classList.remove('hidden');
+
+    if (!searchTerm) {
+        resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">Please enter a Request ID or WhatsApp number.</p>';
+        return;
+    }
+
+    try {
+        // Query Firestore
+        const requestsRef = db.collection("requests");
+        const snapshot = await requestsRef.get();
+
+        const results = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(req => 
+                req.id.toLowerCase().includes(searchTerm) ||
+                (req.whatsapp && req.whatsapp.includes(searchTerm))
+            );
+
+        if (results.length === 0) {
+            resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">No requests found. Please check your Request ID or WhatsApp number.</p>';
+            return;
+        }
+
+        // Render results
+        resultsDiv.innerHTML = results.map(req => `
+            <div class="request-item">
+                <div class="request-header">
+                    <span class="request-id">${req.id}</span>
+                    <span class="status-badge status-${req.status}">${getStatusDescription(req.status)}</span>
+                </div>
+                <div class="request-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Item</div>
+                        <div class="detail-value">${req.item || ''}</div>
                     </div>
-                    
-                    <div class="request-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${req.name}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Item</div>
-                            <div class="detail-value">${req.item}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Budget</div>
-                            <div class="detail-value">${req.budget || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Urgency</div>
-                            <div class="detail-value">${req.urgency || 'Flexible'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Assigned To</div>
-                            <div class="detail-value">${req.assignedTo || 'Unassigned'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Submitted</div>
-                            <div class="detail-value">${req.timestamp.toLocaleString()}</div>
-                        </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">${getStatusDescription(req.status)}</div>
                     </div>
-                    
-                    ${req.description ? `<p style="margin: 15px 0; padding: 10px; background: #fff; border-radius: 5px;"><strong>Details:</strong> ${req.description}</p>` : ''}
-                    
-                    <div class="actions">
-                        <select class="team-select" onchange="assignRequest('${req.id}', this.value)">
-                            <option value="">Assign to...</option>
-                            ${teamMembers.map(member => `<option value="${member}" ${req.assignedTo === member ? 'selected' : ''}>${member}</option>`).join('')}
-                        </select>
-                        
-                        <select onchange="updateStatus('${req.id}', this.value)" class="team-select">
-                            <option value="">Update status...</option>
-                            <option value="new" ${req.status === 'new' ? 'selected' : ''}>New</option>
-                            <option value="assigned" ${req.status === 'assigned' ? 'selected' : ''}>Assigned</option>
-                            <option value="sourcing" ${req.status === 'sourcing' ? 'selected' : ''}>Sourcing</option>
-                            <option value="options-found" ${req.status === 'options-found' ? 'selected' : ''}>Options Found</option>
-                            <option value="paid" ${req.status === 'paid' ? 'selected' : ''}>Paid</option>
-                            <option value="completed" ${req.status === 'completed' ? 'selected' : ''}>Completed</option>
-                        </select>
-                        
-                        <a href="https://wa.me/${req.whatsapp.replace(/[^\d]/g, '')}?text=Hi ${req.name}! This is regarding your request ${req.id} for '${req.item}'. " 
-                           class="whatsapp-link" target="_blank">
-                            📱 WhatsApp
-                        </a>
+                    <div class="detail-item">
+                        <div class="detail-label">Submitted</div>
+                        <div class="detail-value">${req.timestamp?.toDate ? req.timestamp.toDate().toLocaleDateString() : ''}</div>
                     </div>
                 </div>
-            `).join('');
-        }
-        
+            </div>
+        `).join('');
 
-        function assignRequest(requestId, memberName) {
-            if (!memberName) return;
-            
-            const request = requests.find(r => r.id === requestId);
-            if (request) {
-                request.assignedTo = memberName;
-                if (request.status === 'new') {
-                    request.status = 'assigned';
-                }
-                updateAdminDashboard();
-            }
-        }
-
-        function updateStatus(requestId, newStatus) {
-            if (!newStatus) return;
-            
-            const request = requests.find(r => r.id === requestId);
-            if (request) {
-                request.status = newStatus;
-                updateAdminDashboard();
-            }
-        }
-
-        function addTeamMember() {
-            const memberName = document.getElementById('new-member').value.trim();
-            if (memberName && !teamMembers.includes(memberName)) {
-                teamMembers.push(memberName);
-                document.getElementById('new-member').value = '';
-                updateTeamList();
-                updateAdminDashboard();
-            }
-        }
-
-        function updateTeamList() {
-            const teamList = document.getElementById('team-list');
-            teamList.innerHTML = teamMembers.map(member => 
-                `<span class="status-badge status-new">${member}</span>`
-            ).join('');
-        }
-
-        
-
-
-
+    } catch (error) {
+        console.error("Error fetching requests:", error);
+        resultsDiv.innerHTML = '<p style="text-align:center; color:red;">Error fetching requests. Check console for details.</p>';
+    }
+}
     </script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-<script>
-  // Initialize Firebase
-  const firebaseConfig = {
-  apiKey: "AIzaSyAqjoaV8sNnIzh2MtnUoJIhsHl1boRbDUs",
-  authDomain: "pearl-io.firebaseapp.com",
-  projectId: "pearl-io",
-  storageBucket: "pearl-io.firebasestorage.app",
-  messagingSenderId: "1047722086355",
-  appId: "1:1047722086355:web:5e784f1b1c17e55c506926"
-};
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
 
 </body>
 </html>
