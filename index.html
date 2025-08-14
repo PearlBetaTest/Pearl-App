@@ -647,25 +647,45 @@
         const requestsRef = db.collection("requests");
         const snapshot = await requestsRef.get();
 
-        // Filter for exact ID match only
         const results = snapshot.docs
             .map(doc => ({ id: doc.id, ...doc.data() }))
-            .filter(req => req.id.toLowerCase() === searchTerm);  // <-- exact match
+            .filter(req => req.id.toLowerCase() === searchTerm); // exact match only
 
         if (results.length === 0) {
             resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">No requests found. Please check your Request ID.</p>';
             return;
         }
 
-        // Display the matching request (example)
-        resultsDiv.innerHTML = `<p>Request ID: ${results[0].id}</p>
-                                <p>Details: ${JSON.stringify(results[0])}</p>`;
+        // Render results
+        resultsDiv.innerHTML = results.map(req => `
+            <div class="request-item">
+                <div class="request-header">
+                    <span class="request-id">${req.id}</span>
+                    <span class="status-badge status-${req.status}">${getStatusDescription(req.status)}</span>
+                </div>
+                <div class="request-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Item</div>
+                        <div class="detail-value">${req.item || ''}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">${getStatusDescription(req.status)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Submitted</div>
+                        <div class="detail-value">${req.timestamp?.toDate ? req.timestamp.toDate().toLocaleDateString() : ''}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
 
     } catch (error) {
-        console.error(error);
-        resultsDiv.innerHTML = '<p style="text-align:center; color:red;">Error fetching request.</p>';
+        console.error("Error fetching requests:", error);
+        resultsDiv.innerHTML = '<p style="text-align:center; color:red;">Error fetching requests. Check console for details.</p>';
     }
 }
+
     </script>
 
 </body>
