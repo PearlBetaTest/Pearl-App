@@ -36,6 +36,3 @@ yarn-error.log*
 # Ignore generated files from editors
 *.bak
 *.orig
-
-# Private variables
-config.js
