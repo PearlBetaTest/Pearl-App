@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,6 +74,7 @@
             color: #1565c0;
             margin-bottom: 40px;
         }
+
         .header-title {
             font-family: 'Montserrat', sans-serif;
             font-size: 2.5em;
@@ -90,7 +92,7 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
 
@@ -201,12 +203,35 @@
             text-transform: uppercase;
         }
 
-        .status-new { background: #fff3cd; color: #856404; }
-        .status-assigned { background: #d1ecf1; color: #0c5460; }
-        .status-sourcing { background: #d4edda; color: #155724; }
-        .status-options-found { background: #f8d7da; color: #721c24; }
-        .status-paid { background: #e2e3e5; color: #383d41; }
-        .status-completed { background: #d1ecf1; color: #0c5460; }
+        .status-new {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-assigned {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-sourcing {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-options-found {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-paid {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
 
         .request-details {
             display: grid;
@@ -279,7 +304,7 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .stat-number {
@@ -391,7 +416,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -405,26 +430,26 @@
             max-width: 400px;
             width: 90%;
             margin: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
             }
-            
+
             .header h1 {
                 font-size: 2em;
             }
-            
+
             .card {
                 padding: 20px;
             }
-            
+
             .request-details {
                 grid-template-columns: 1fr;
             }
-            
+
             .actions {
                 flex-direction: column;
             }
@@ -439,6 +464,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="main-nav">
         <div class="nav-buttons">
@@ -451,19 +477,32 @@
 
     <div class="container">
         <div class="header">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px;">
-        <div style="width: 65px; height: 60px;">
-            <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
+
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;">
+                
+
+                <!-- Centered logo + title below -->
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <div style="width: 65px; height: 60px;">
+                        <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
+                    </div>
+                    <h1 class="header-title">Pearl</h1>
+                </div>
+                <p class="header-subtitle">Get anything, sourced locally</p>
+                 <!-- Flag on top -->
+                <div style="width: 80px; height: 93px;">
+                    <img src="images/Flag_map_of_Kenya.png" alt="Flag" style="width: 100%; height: 100%;" />
+                </div>
+            </div>
+            
+           
         </div>
-        <h1 class="header-title">Pearl</h1>
-    </div>
-    <p class="header-subtitle">Get anything, sourced locally</p>
-    </div>
 
         <!-- User Request Section -->
         <div id="user-section" class="card">
             <h2>What do you need?</h2>
-            <p style="margin-bottom: 25px; color: #666;">Submit your request below and we'll find the best local options for you.</p>
+            <p style="margin-bottom: 25px; color: #666;">Submit your request below and we'll find the best local options
+                for you.</p>
 
             <form id="request-form">
                 <div class="form-group">
@@ -478,12 +517,14 @@
 
                 <div class="form-group">
                     <label for="item">Item Needed <span style="color: red;">*</span></label>
-                    <input type="text" id="item" required placeholder="e.g., USB-C charger, blender, boda boda helmet, etc.">
+                    <input type="text" id="item" required
+                        placeholder="e.g., USB-C charger, blender, boda boda helmet, etc.">
                 </div>
 
                 <div class="form-group">
                     <label for="description">Detailed Description</label>
-                    <textarea id="description" placeholder="Specific model, color, specifications, quantity needed, etc."></textarea>
+                    <textarea id="description"
+                        placeholder="Specific model, color, specifications, quantity needed, etc."></textarea>
                 </div>
 
                 <div class="form-group">
@@ -510,10 +551,11 @@
                 </div>
 
                 <div class="form-group" style="width: 100%;">
-                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-start;">
+                    <div
+                        style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-start;">
                         <input type="checkbox" id="consent" required>
                         <label for="consent" style="cursor: pointer; margin: 0;">
-                            I agree to be contacted by a Pearl representative regarding my request 
+                            I agree to be contacted by a Pearl representative regarding my request
                             <span style="color: red;">*</span>
                         </label>
                     </div>
@@ -534,7 +576,7 @@
                 <input type="text" id="track-id" placeholder="Enter your request ID">
             </div>
             <button onclick="trackRequest()" class="btn">Track Request</button>
-            
+
             <div id="track-results" class="hidden" style="margin-top: 30px;">
                 <!-- Results will be populated here -->
             </div>
@@ -546,64 +588,89 @@
             <div style="max-width: 1200px; margin: 0 auto;">
                 <div style="display: grid; gap: 25px;">
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">1</div>
+                        <div
+                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            1</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">User Submits Request</h3>
-                            <p style="color: #666; line-height: 1.6;">Fill out our simple form with details about what you need. Include specifications, budget, and timeline.</p>
+                            <p style="color: #666; line-height: 1.6;">Fill out our simple form with details about what
+                                you need. Include specifications, budget, and timeline.</p>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">2</div>
+                        <div
+                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            2</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">Request Reviewed</h3>
-                            <p style="color: #666; line-height: 1.6;">Our team reviews your request and assigns it to a specialist team member with expertise in sourcing your specific item.</p>
+                            <p style="color: #666; line-height: 1.6;">Our team reviews your request and assigns it to a
+                                specialist team member with expertise in sourcing your specific item.</p>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">3</div>
+                        <div
+                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            3</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">Sourcing & Options Proposed</h3>
-                            <p style="color: #666; line-height: 1.6;">Your assigned team member will research local suppliers and reach out with purchasing options, prices, and availability details.</p>
+                            <p style="color: #666; line-height: 1.6;">Your assigned team member will research local
+                                suppliers and reach out with purchasing options, prices, and availability details.</p>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">4</div>
+                        <div
+                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            4</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">Option Selection</h3>
-                            <p style="color: #666; line-height: 1.6;">Review the presented options and select your preferred choice based on price, quality, and delivery timeline.</p>
+                            <p style="color: #666; line-height: 1.6;">Review the presented options and select your
+                                preferred choice based on price, quality, and delivery timeline.</p>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">5</div>
+                        <div
+                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            5</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">Payment</h3>
-                            <p style="color: #666; line-height: 1.6;">Pay your team member for the item cost and service fee. Multiple payment methods accepted.</p>
+                            <p style="color: #666; line-height: 1.6;">Pay your team member for the item cost and service
+                                fee. Multiple payment methods accepted.</p>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">6</div>
+                        <div
+                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            6</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">Delivery Coordination</h3>
-                            <p style="color: #666; line-height: 1.6;">You and your team member will agree on the best delivery method - pickup, local delivery, or shipping. Additional delivery fees may apply.</p>
+                            <p style="color: #666; line-height: 1.6;">You and your team member will agree on the best
+                                delivery method - pickup, local delivery, or shipping. Additional delivery fees may
+                                apply.</p>
                         </div>
                     </div>
-                    
+
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
-                        <div style="background: #4caf50; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">7</div>
+                        <div
+                            style="background: #4caf50; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            7</div>
                         <div>
                             <h3 style="color: #1976d2; margin-bottom: 8px;">Item Delivery</h3>
-                            <p style="color: #666; line-height: 1.6;">Receive your item according to the agreed delivery method and timeline. Request completed!</p>
+                            <p style="color: #666; line-height: 1.6;">Receive your item according to the agreed delivery
+                                method and timeline. Request completed!</p>
                         </div>
                     </div>
                 </div>
-                
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #ff9800;">
-                    <p style="color: #666; margin: 0; font-style: italic;"><strong>Note:</strong> This process may differ when providing services as compared to goods. Service requests may involve different evaluation and delivery methods.</p>
+
+                <div
+                    style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #ff9800;">
+                    <p style="color: #666; margin: 0; font-style: italic;"><strong>Note:</strong> This process may
+                        differ when providing services as compared to goods. Service requests may involve different
+                        evaluation and delivery methods.</p>
                 </div>
             </div>
         </div>
@@ -611,7 +678,7 @@
         <!-- FAQ Section -->
         <div id="faq-section" class="card hidden">
             <h2>Frequently Asked Questions</h2>
-            
+
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
                     What areas do you serve?
@@ -628,7 +695,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Trusted team members with hospitality and concierge training handle all sourcing requests. Our team has extensive experience in local markets and supplier networks.</p>
+                    <p>Trusted team members with hospitality and concierge training handle all sourcing requests. Our
+                        team has extensive experience in local markets and supplier networks.</p>
                 </div>
             </div>
 
@@ -638,7 +706,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Our service fee is 500 KES per request. This covers the research, sourcing, and coordination. You'll pay separately for the actual item cost and any delivery fees.</p>
+                    <p>Our service fee is 500 KES per request. This covers the research, sourcing, and coordination. You
+                        pay this in addition to the actual item cost and any delivery fees.</p>
                 </div>
             </div>
 
@@ -648,7 +717,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Most requests receive initial options within two to three days unless otherwise specified. Complex or rare items may take longer. We'll keep you updated throughout the process.</p>
+                    <p>Most requests receive initial options within two to three days unless otherwise specified.
+                        Complex or rare items may take longer. We'll keep you updated throughout the process.</p>
                 </div>
             </div>
 
@@ -658,7 +728,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>We accept M-Pesa, bank transfers, and cash payments. Payment details will be provided by your assigned team member once options are found.</p>
+                    <p>We accept M-Pesa, bank transfers, and cash payments. Payment details will be provided by your
+                        assigned team member once options are found.</p>
                 </div>
             </div>
 
@@ -668,7 +739,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>If you're not satisfied with the initial options, we'll continue searching at no additional service fee. You only pay when you find something you want to purchase.</p>
+                    <p>If you're not satisfied with the initial options, we'll continue searching at no additional
+                        service fee. You only pay when you find something you want to purchase.</p>
                 </div>
             </div>
 
@@ -678,7 +750,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>We coordinate delivery options including pickup and local delivery. Delivery arrangements and costs are discussed with your team member based on the item and location.</p>
+                    <p>We coordinate delivery options including pickup and local delivery. Delivery arrangements and
+                        costs are discussed with your team member based on the item and location.</p>
                 </div>
             </div>
 
@@ -688,7 +761,8 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>We can source most legal items including electronics, household goods, automotive parts, books, and more. We cannot assist with restricted, illegal, or hazardous items.</p>
+                    <p>We can source most legal items including electronics, household goods, automotive parts, books,
+                        and more. We cannot assist with restricted, illegal, or hazardous items.</p>
                 </div>
             </div>
 
@@ -716,9 +790,10 @@
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
 ">
-    <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">Request Submitted!</h3>
-    <p style="margin:0 0 10px 0; font-size:14px; color:#555;">We will contact you shortly about your request. Please save this ID for tracking:</p>
-    <div id="custom-alert-id" style="
+            <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">Request Submitted!</h3>
+            <p style="margin:0 0 10px 0; font-size:14px; color:#555;">We will contact you shortly about your request.
+                Please save this ID for tracking:</p>
+            <div id="custom-alert-id" style="
         padding:8px 12px;
         background:#f7f7f7;
         border-radius:8px;
@@ -728,7 +803,7 @@
         font-size:15px;
         color:#222;
     "></div>
-    <button onclick="copyAlertId()" style="
+            <button onclick="copyAlertId()" style="
         padding:6px 12px;
         background:#007bff;
         color:white;
@@ -736,7 +811,7 @@
         border-radius:6px;
         cursor:pointer;
     ">📋 Copy ID</button>
-    <button onclick="closeCustomAlert()" style="
+            <button onclick="closeCustomAlert()" style="
         padding:6px 12px;
         background:#e0e0e0;
         color:#333;
@@ -745,30 +820,30 @@
         cursor:pointer;
         margin-left:8px;
     ">Close</button>
-    </div>
+        </div>
 
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="config.js"></script>
-  
+
     <script>
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         // Navigation handling
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const navButtons = document.querySelectorAll('.nav-btn');
-            
+
             navButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const section = this.getAttribute('data-section');
-                    
-                        showSection(section);
-                        setActiveButton(this);
-                    
+
+                    showSection(section);
+                    setActiveButton(this);
+
                 });
             });
         });
@@ -785,7 +860,7 @@
                 const el = document.getElementById(section + '-section');
                 if (el) el.classList.add('hidden');
             });
-            
+
             // Show selected section
             const selectedEl = document.getElementById(sectionName + '-section');
             if (selectedEl) selectedEl.classList.remove('hidden');
@@ -795,7 +870,7 @@
             const faqItem = button.parentElement;
             const answer = faqItem.querySelector('.faq-answer');
             const toggle = button.querySelector('.faq-toggle');
-            
+
             // Close all other FAQ items
             document.querySelectorAll('.faq-question').forEach(q => {
                 if (q !== button) {
@@ -804,7 +879,7 @@
                     q.querySelector('.faq-toggle').textContent = '+';
                 }
             });
-            
+
             // Toggle current FAQ item
             const isActive = button.classList.contains('active');
             if (isActive) {
@@ -819,7 +894,7 @@
         }
 
         async function submitRequest(e) {
-             e.preventDefault(); // Stop form from reloading page
+            e.preventDefault(); // Stop form from reloading page
             // Get form values
             const name = document.getElementById('name').value.trim();
             const whatsapp = document.getElementById('whatsapp').value.trim();
@@ -854,15 +929,15 @@
             try {
                 // Add document to Firestore
                 const docRef = await db.collection("requests").add({
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                name,
-                whatsapp,
-                item,
-                description,
-                budget,
-                urgency,
-                consent,
-                status: 'new'
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    name,
+                    whatsapp,
+                    item,
+                    description,
+                    budget,
+                    urgency,
+                    consent,
+                    status: 'new'
                 });
 
                 // Show the unique tracking ID to the user
@@ -894,31 +969,31 @@
             };
             return descriptions[status] || status;
         }
-async function trackRequest() {
-    const requestId = document.getElementById('track-id').value.trim();
-    const resultsDiv = document.getElementById('track-results');
-    resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">Searching...</p>';
-    resultsDiv.classList.remove('hidden');
+        async function trackRequest() {
+            const requestId = document.getElementById('track-id').value.trim();
+            const resultsDiv = document.getElementById('track-results');
+            resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">Searching...</p>';
+            resultsDiv.classList.remove('hidden');
 
-    if (!requestId) {
-        resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">Please enter a Request ID.</p>';
-        return;
-    }
+            if (!requestId) {
+                resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">Please enter a Request ID.</p>';
+                return;
+            }
 
-    try {
-        // Direct document lookup - only gets the specific document
-        const docRef = db.collection("requests").doc(requestId);
-        const doc = await docRef.get();
+            try {
+                // Direct document lookup - only gets the specific document
+                const docRef = db.collection("requests").doc(requestId);
+                const doc = await docRef.get();
 
-        if (!doc.exists) {
-            resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">No request found with that ID.</p>';
-            return;
-        }
+                if (!doc.exists) {
+                    resultsDiv.innerHTML = '<p style="text-align:center; color:#666;">No request found with that ID.</p>';
+                    return;
+                }
 
-        const req = { id: doc.id, ...doc.data() };
+                const req = { id: doc.id, ...doc.data() };
 
-        // Render result
-        resultsDiv.innerHTML = `
+                // Render result
+                resultsDiv.innerHTML = `
             <div class="request-item">
                 <div class="request-header">
                     <span class="request-id">${req.id}</span>
@@ -941,43 +1016,44 @@ async function trackRequest() {
             </div>
         `;
 
-    } catch (error) {
-        console.error("Error fetching request:", error);
-        resultsDiv.innerHTML = '<p style="text-align:center; color:red;">Error fetching request. Please check the Request ID.</p>';
-    }
-}
+            } catch (error) {
+                console.error("Error fetching request:", error);
+                resultsDiv.innerHTML = '<p style="text-align:center; color:red;">Error fetching request. Please check the Request ID.</p>';
+            }
+        }
 
-function showCustomAlertWithId(id) {
-    const alertBox = document.getElementById('custom-alert');
-    document.getElementById('custom-alert-id').textContent = id;
-    alertBox.style.display = 'block';
-    requestAnimationFrame(() => {
-        alertBox.style.opacity = '1';
-        alertBox.style.transform = 'translateX(-50%) translateY(0)';
-    });
-}
+        function showCustomAlertWithId(id) {
+            const alertBox = document.getElementById('custom-alert');
+            document.getElementById('custom-alert-id').textContent = id;
+            alertBox.style.display = 'block';
+            requestAnimationFrame(() => {
+                alertBox.style.opacity = '1';
+                alertBox.style.transform = 'translateX(-50%) translateY(0)';
+            });
+        }
 
-function closeCustomAlert() {
-    const alertBox = document.getElementById('custom-alert');
-    alertBox.style.opacity = '0';
-    alertBox.style.transform = 'translateX(-50%) translateY(-10px)';
-    setTimeout(() => {
-        alertBox.style.display = 'none';
-    }, 300);
-}
+        function closeCustomAlert() {
+            const alertBox = document.getElementById('custom-alert');
+            alertBox.style.opacity = '0';
+            alertBox.style.transform = 'translateX(-50%) translateY(-10px)';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 300);
+        }
 
-function copyAlertId() {
-    const idText = document.getElementById('custom-alert-id').textContent;
-    navigator.clipboard.writeText(idText).then(() => {
-        const copyBtn = event.target;
-        copyBtn.textContent = "✅ Copied!";
-        setTimeout(() => {
-            copyBtn.textContent = "📋 Copy ID";
-        }, 1500);
-    });
-}
+        function copyAlertId() {
+            const idText = document.getElementById('custom-alert-id').textContent;
+            navigator.clipboard.writeText(idText).then(() => {
+                const copyBtn = event.target;
+                copyBtn.textContent = "✅ Copied!";
+                setTimeout(() => {
+                    copyBtn.textContent = "📋 Copy ID";
+                }, 1500);
+            });
+        }
 
     </script>
 
 </body>
+
 </html>
