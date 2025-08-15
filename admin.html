@@ -927,101 +927,106 @@
         }
 
         // Update requests display
-        
         function updateRequestsDisplay() {
-            const container = document.getElementById('requests-container');
-            
-            if (filteredRequests.length === 0) {
-                if (allRequests.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <h3>No Requests Yet</h3>
-                            <p>Requests will appear here as they come in from customers.</p>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <h3>No Matching Requests</h3>
-                            <p>No requests match the current filter criteria. Try adjusting your filters.</p>
-                        </div>
-                    `;
-                }
-                return;
-            }
-
-            container.innerHTML = filteredRequests.map(req => `
-                <div class="request-item">
-                    <div class="request-header">
-                        <span class="request-id">${req.id}</span>
-                        <span class="status-badge status-${req.status || 'new'}">${(req.status || 'new').replace('-', ' ')}</span>
-                    </div>
-                    
-                    <div class="request-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${req.name || 'Unknown'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Item Requested</div>
-                            <div class="detail-value">${req.item || 'No item specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">WhatsApp</div>
-                            <div class="detail-value">${req.whatsapp || 'Not provided'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Budget Range</div>
-                            <div class="detail-value">${req.budget || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Urgency</div>
-                            <div class="detail-value">${req.urgency || 'Flexible'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Assigned To</div>
-                            <div class="detail-value">${req.assignedTo || 'Unassigned'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Date Submitted</div>
-                            <div class="detail-value">${req.timestamp.toLocaleDateString()}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Time Submitted</div>
-                            <div class="detail-value">${req.timestamp.toLocaleTimeString()}</div>
-                        </div>
-                    </div>
-                    
-                    ${req.description ? `
-                        <div class="description-box">
-                            <strong>Additional Details:</strong><br>
-                            ${req.description}
-                        </div>
-                    ` : ''}
-                    
-                    <div class="actions">
-                        <select onchange="assignRequest('${req.id}', this.value)">
-                            <option value="">Assign to team member...</option>
-                            ${teamMembers.map(member => `<option value="${member}" ${req.assignedTo === member ? 'selected' : ''}>${member}</option>`).join('')}
-                        </select>
-                        <select onchange="updateStatus('${req.id}', this.value)">
-                            <option value="new" ${(req.status === 'new' || !req.status) ? 'selected' : ''}>New</option>
-                            <option value="assigned" ${req.status === 'assigned' ? 'selected' : ''}>Assigned</option>
-                            <option value="sourcing" ${req.status === 'sourcing' ? 'selected' : ''}>Sourcing</option>
-                            <option value="options-found" ${req.status === 'options-found' ? 'selected' : ''}>Options Found</option>
-                            <option value="paid" ${req.status === 'paid' ? 'selected' : ''}>Paid</option>
-                            <option value="completed" ${req.status === 'completed' ? 'selected' : ''}>Completed</option>
-                        </select>
-                                            
-                        ${req.whatsapp ? `
-                            <a href="https://wa.me/${req.whatsapp.replace(/[^\d]/g, '')}?text=Hi ${encodeURIComponent(req.name || 'there')}! This is regarding your Pearl request ${req.id} for '${encodeURIComponent(req.item)}'. " class="whatsapp-link" target="_blank">
-                                📱 Contact Customer
-                            </a>
-                        ` : ''}
-                    </div>
+    const container = document.getElementById('requests-container');
+    
+    if (filteredRequests.length === 0) {
+        if (allRequests.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No Requests Yet</h3>
+                    <p>Requests will appear here as they come in from customers.</p>
                 </div>
-            `).join('');
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No Matching Requests</h3>
+                    <p>No requests match the current filter criteria. Try adjusting your filters.</p>
+                </div>
+            `;
         }
+        return;
+    }
+
+    container.innerHTML = filteredRequests.map(req => `
+        <div class="request-item">
+            <div class="request-header">
+                <span class="request-id">${req.id}</span>
+                <span class="status-badge status-${req.status || 'new'}">${(req.status || 'new').replace('-', ' ')}</span>
+            </div>
+            
+            <div class="request-details">
+                <div class="detail-item">
+                    <div class="detail-label">Customer</div>
+                    <div class="detail-value">${req.name || 'Unknown'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Item Requested</div>
+                    <div class="detail-value">${req.item || 'No item specified'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">WhatsApp</div>
+                    <div class="detail-value">${req.whatsapp || 'Not provided'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Budget Range</div>
+                    <div class="detail-value">${req.budget || 'Not specified'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Urgency</div>
+                    <div class="detail-value">${req.urgency || 'Flexible'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Assigned To</div>
+                    <div class="detail-value">${req.assignedTo || 'Unassigned'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Date Submitted</div>
+                    <div class="detail-value">${req.timestamp.toLocaleDateString()}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Time Submitted</div>
+                    <div class="detail-value">${req.timestamp.toLocaleTimeString()}</div>
+                </div>
+            </div>
+            
+            ${req.description ? `
+                <div class="description-box">
+                    <strong>Additional Details:</strong><br>
+                    ${req.description}
+                </div>
+            ` : ''}
+            
+            <div class="actions">
+                <select onchange="assignRequest('${req.id}', this.value)">
+                    ${!req.assignedTo 
+                        ? `<option value="">Assign to team member...</option>` 
+                        : `<option value="${req.assignedTo}" selected>${req.assignedTo}</option>`}
+                    ${teamMembers
+                        .filter(member => member !== req.assignedTo)
+                        .map(member => `<option value="${member}">${member}</option>`)
+                        .join('')}
+                </select>
+                
+                <select onchange="updateStatus('${req.id}', this.value)">
+                    <option value="new" ${(req.status === 'new' || !req.status) ? 'selected' : ''}>New</option>
+                    <option value="assigned" ${req.status === 'assigned' ? 'selected' : ''}>Assigned</option>
+                    <option value="sourcing" ${req.status === 'sourcing' ? 'selected' : ''}>Sourcing</option>
+                    <option value="options-found" ${req.status === 'options-found' ? 'selected' : ''}>Options Found</option>
+                    <option value="paid" ${req.status === 'paid' ? 'selected' : ''}>Paid</option>
+                    <option value="completed" ${req.status === 'completed' ? 'selected' : ''}>Completed</option>
+                </select>
+                                    
+                ${req.whatsapp ? `
+                    <a href="https://wa.me/${req.whatsapp.replace(/[^\d]/g, '')}?text=Hi ${encodeURIComponent(req.name || 'there')}! This is regarding your Pearl request ${req.id} for '${encodeURIComponent(req.item)}'. " class="whatsapp-link" target="_blank">
+                        📱 Contact Customer
+                    </a>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
 
         // Update team members display
         function updateTeamDisplay() {
