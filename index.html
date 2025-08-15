@@ -531,7 +531,7 @@
             <h2>Track Your Request</h2>
             <div class="form-group">
                 <label for="track-id">Request ID or WhatsApp Number</label>
-                <input type="text" id="track-id" placeholder="Enter your request ID or WhatsApp number">
+                <input type="text" id="track-id" placeholder="Enter your request ID">
             </div>
             <button onclick="trackRequest()" class="btn">Track Request</button>
             
@@ -698,6 +698,54 @@
                 <p><a href="mailto:business@pearl-ke.com" class="contact-email">business@pearl-ke.com</a></p>
             </div> -->
         </div>
+        <div id="custom-alert" style="
+    display:none;
+    position:fixed;
+    top:40px;
+    left:50%;
+    transform:translateX(-50%);
+    background:white;
+    padding:16px 20px;
+    border:1px solid #ddd;
+    border-radius:16px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.15);
+    z-index:10000;
+    max-width:350px;
+    text-align:center;
+    font-family: sans-serif;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+">
+    <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">Request Submitted!</h3>
+    <p style="margin:0 0 10px 0; font-size:14px; color:#555;">Please save this ID for tracking:</p>
+    <div id="custom-alert-id" style="
+        padding:8px 12px;
+        background:#f7f7f7;
+        border-radius:8px;
+        margin-bottom:12px;
+        user-select:text;
+        font-weight:bold;
+        font-size:15px;
+        color:#222;
+    "></div>
+    <button onclick="copyAlertId()" style="
+        padding:6px 12px;
+        background:#007bff;
+        color:white;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+    ">📋 Copy ID</button>
+    <button onclick="closeCustomAlert()" style="
+        padding:6px 12px;
+        background:#e0e0e0;
+        color:#333;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+        margin-left:8px;
+    ">Close</button>
+    </div>
 
     </div>
 
@@ -817,8 +865,9 @@
                 });
 
                 // Show the unique tracking ID to the user
-                alert(`Request submitted successfully! Your request ID is: ${docRef.id}\n\nPlease save this ID for tracking.`);
-
+                //alert(`Request submitted successfully! Your request ID is: ${docRef.id}\n\nPlease save this ID for tracking.`);
+                // Show the unique tracking ID with smooth fade-in alert
+                showCustomAlertWithId(docRef.id);
                 // Reset form
                 document.getElementById("request-form").reset();
 
@@ -898,6 +947,36 @@
         console.error("Error fetching requests:", error);
         resultsDiv.innerHTML = '<p style="text-align:center; color:red;">Error fetching requests. Check console for details.</p>';
     }
+}
+
+function showCustomAlertWithId(id) {
+    const alertBox = document.getElementById('custom-alert');
+    document.getElementById('custom-alert-id').textContent = id;
+    alertBox.style.display = 'block';
+    requestAnimationFrame(() => {
+        alertBox.style.opacity = '1';
+        alertBox.style.transform = 'translateX(-50%) translateY(0)';
+    });
+}
+
+function closeCustomAlert() {
+    const alertBox = document.getElementById('custom-alert');
+    alertBox.style.opacity = '0';
+    alertBox.style.transform = 'translateX(-50%) translateY(-10px)';
+    setTimeout(() => {
+        alertBox.style.display = 'none';
+    }, 300);
+}
+
+function copyAlertId() {
+    const idText = document.getElementById('custom-alert-id').textContent;
+    navigator.clipboard.writeText(idText).then(() => {
+        const copyBtn = event.target;
+        copyBtn.textContent = "✅ Copied!";
+        setTimeout(() => {
+            copyBtn.textContent = "📋 Copy ID";
+        }, 1500);
+    });
 }
 
     </script>
