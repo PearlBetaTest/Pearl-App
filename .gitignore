@@ -37,4 +37,5 @@ yarn-error.log*
 *.bak
 *.orig
 
-admin.html
+# Admin setup
+Admin\ Setup/

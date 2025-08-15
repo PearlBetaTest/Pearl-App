@@ -12,6 +12,15 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
+    "firebase-admin": "^13.4.0",
     "googleapis": "^155.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbasescu98/App-Test-Site.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sbasescu98/App-Test-Site/issues"
+  },
+  "homepage": "https://github.com/sbasescu98/App-Test-Site#readme"
 }
