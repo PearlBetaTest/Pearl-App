@@ -717,7 +717,7 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
 ">
     <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">Request Submitted!</h3>
-    <p style="margin:0 0 10px 0; font-size:14px; color:#555;">Please save this ID for tracking:</p>
+    <p style="margin:0 0 10px 0; font-size:14px; color:#555;">We will contact you shortly about your request. Please save this ID for tracking:</p>
     <div id="custom-alert-id" style="
         padding:8px 12px;
         background:#f7f7f7;
@@ -861,11 +861,12 @@
                 description,
                 budget,
                 urgency,
-                consent
+                consent,
+                status: 'new'
                 });
 
                 // Show the unique tracking ID to the user
-                //alert(`Request submitted successfully! Your request ID is: ${docRef.id}\n\nPlease save this ID for tracking.`);
+                //alert(`Request submitted successfully! We will contact you shortly about your request. \n Please save this ID for tracking. \n${docRef.id}\n`);
                 // Show the unique tracking ID with smooth fade-in alert
                 showCustomAlertWithId(docRef.id);
                 // Reset form
