@@ -293,6 +293,97 @@
             margin-top: 5px;
         }
 
+        /* FAQ Styles */
+        .faq-item {
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            background: #f8f9fa;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #1976d2;
+            border: none;
+            font-size: 16px;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+
+        .faq-question.active {
+            background: #e3f2fd;
+        }
+
+        .faq-toggle {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1976d2;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .contact-section h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .contact-section p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .contact-email {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+
         /* Modal styles */
         .modal-overlay {
             position: fixed;
@@ -337,6 +428,14 @@
             .actions {
                 flex-direction: column;
             }
+
+            .faq-question {
+                padding: 15px;
+            }
+
+            .faq-answer.active {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -346,6 +445,7 @@
             <button class="nav-btn active" data-section="user">Submit Request</button>
             <button class="nav-btn" data-section="track">Track Request</button>
             <button class="nav-btn" data-section="how-it-works">How It Works</button>
+            <button class="nav-btn" data-section="faq">FAQ</button>
         </div>
     </div>
 
@@ -358,7 +458,7 @@
         <h1 class="header-title">Pearl</h1>
     </div>
     <p class="header-subtitle">Get anything, sourced locally</p>
-</div>
+    </div>
 
         <!-- User Request Section -->
         <div id="user-section" class="card">
@@ -508,6 +608,98 @@
             </div>
         </div>
 
+        <!-- FAQ Section -->
+        <div id="faq-section" class="card hidden">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What areas do you serve?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Currently serving the Nairobi area. We're working to expand to other major cities soon.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Who sources the items?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Trusted team members with hospitality and concierge training handle all sourcing requests. Our team has extensive experience in local markets and supplier networks.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How much does the service cost?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Our service fee is 500 KES per request. This covers the research, sourcing, and coordination. You'll pay separately for the actual item cost and any delivery fees.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How long does it take to find items?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Most requests receive initial options within two to three days unless otherwise specified. Complex or rare items may take longer. We'll keep you updated throughout the process.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What payment methods do you accept?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We accept M-Pesa, bank transfers, and cash payments. Payment details will be provided by your assigned team member once options are found.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What if I'm not satisfied with the options found?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>If you're not satisfied with the initial options, we'll continue searching at no additional service fee. You only pay when you find something you want to purchase.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Do you handle delivery?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We coordinate delivery options including pickup and local delivery. Delivery arrangements and costs are discussed with your team member based on the item and location.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What types of items can you source?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We can source most legal items including electronics, household goods, automotive parts, books, and more. We cannot assist with restricted, illegal, or hazardous items.</p>
+                </div>
+            </div>
+
+            <div class="contact-section">
+                <h3>Business Inquiries</h3>
+                <p>For partnerships, bulk orders, or other business inquiries, please contact us at:</p>
+                <p><a href="mailto:business@pearl-ke.com" class="contact-email">business@pearl-ke.com</a></p>
+                <p style="margin-top: 15px; font-size: 14px;">We typically respond to business inquiries within 24 hours.</p>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -540,19 +732,44 @@
         }
 
         function showSection(sectionName) {
-    // Hide all sections
-    const sections = ['user', 'track', 'how-it-works'];
-    sections.forEach(section => {
-        const el = document.getElementById(section + '-section');
-        if (el) el.classList.add('hidden');
-    });
-    
-    // Show selected section
-    const selectedEl = document.getElementById(sectionName + '-section');
-    if (selectedEl) selectedEl.classList.remove('hidden');
-}
+            // Hide all sections
+            const sections = ['user', 'track', 'how-it-works', 'faq'];
+            sections.forEach(section => {
+                const el = document.getElementById(section + '-section');
+                if (el) el.classList.add('hidden');
+            });
+            
+            // Show selected section
+            const selectedEl = document.getElementById(sectionName + '-section');
+            if (selectedEl) selectedEl.classList.remove('hidden');
+        }
 
-
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const toggle = button.querySelector('.faq-toggle');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-question').forEach(q => {
+                if (q !== button) {
+                    q.classList.remove('active');
+                    q.parentElement.querySelector('.faq-answer').classList.remove('active');
+                    q.querySelector('.faq-toggle').textContent = '+';
+                }
+            });
+            
+            // Toggle current FAQ item
+            const isActive = button.classList.contains('active');
+            if (isActive) {
+                button.classList.remove('active');
+                answer.classList.remove('active');
+                toggle.textContent = '+';
+            } else {
+                button.classList.add('active');
+                answer.classList.add('active');
+                toggle.textContent = '+';
+            }
+        }
 
         async function submitRequest(e) {
              e.preventDefault(); // Stop form from reloading page
@@ -617,16 +834,14 @@
             location.reload();
         }
 
-        
-
         function getStatusDescription(status) {
             const descriptions = {
                 'new': 'Request received, awaiting assignment',
                 'assigned': 'Assigned to team member',
                 'sourcing': 'Actively searching for your item',
                 'options-found': 'Found options, waiting for your choice',
-                'paid': 'Payment received, purchasing item',
-                'completed': 'Item purchased and ready for pickup/delivery'
+                'paid': 'Payment received',
+                'completed': 'Item purchased and delivered'
             };
             return descriptions[status] || status;
         }

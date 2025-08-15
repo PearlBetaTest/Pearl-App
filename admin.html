@@ -178,6 +178,66 @@
             font-weight: 600;
         }
 
+        /* Filter section */
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .filter-group select {
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .clear-filters {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .clear-filters:hover {
+            background: #f57c00;
+            transform: translateY(-1px);
+        }
+
         .request-item {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -375,6 +435,66 @@
             margin-bottom: 1rem;
         }
 
+        .results-info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Navigation styles */
+        .main-nav {
+            background: transparent;
+            padding: 20px 20px 10px 20px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .nav-buttons {
+            display: inline-flex;
+            gap: 0;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: #0d47a1;
+            border: none;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-btn:not(:last-child)::after {
+            content: '|';
+            position: absolute;
+            right: -1px;
+            color: #1976d2;
+            font-weight: normal;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-btn:hover {
+            color: #1565c0;
+        }
+
+        .nav-btn.active {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: block;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -423,6 +543,11 @@
             .stat-number {
                 font-size: 2em;
             }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
         }
     </style>
 </head>
@@ -454,6 +579,14 @@
 
     <!-- Admin Dashboard -->
     <div id="admin-dashboard" class="hidden">
+        <!-- Navigation -->
+        <div class="main-nav hidden" id="main-nav">
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="switchTab('requests')">Requests</button>
+                <button class="nav-btn" onclick="switchTab('team')">Team Management</button>
+            </div>
+        </div>
+        
         <div class="container">
             <div class="header">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px;">
@@ -464,7 +597,7 @@
                 </div>
                 <p class="header-subtitle">Admin Dashboard - Request Management</p>
             </div>
-            
+
             <!-- Stats Cards -->
             <div class="stats">
                 <div class="stat-card">
@@ -485,23 +618,54 @@
                 </div>
             </div>
 
-            <!-- Team Management -->
-            <div class="card">
-                <h3 style="color: #1976d2; margin-bottom: 15px;">Team Management</h3>
-                <div class="team-input-row">
-                    <input type="text" id="new-member" placeholder="Enter team member name">
-                    <button onclick="addTeamMember()" class="btn">Add Member</button>
+            <!-- Requests Tab -->
+            <div id="requests-tab" class="tab-content active">
+                <!-- Filters -->
+                <div class="filters">
+                    <h3 style="color: #1976d2; margin-bottom: 15px;">Filter Requests</h3>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="status-filter">Filter by Status</label>
+                            <select id="status-filter" onchange="applyFilters()">
+                                <option value="">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="employee-filter">Filter by Employee</label>
+                            <select id="employee-filter" onchange="applyFilters()">
+                                <option value="">All Employees</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <button onclick="clearFilters()" class="clear-filters">Clear Filters</button>
+                        </div>
+                    </div>
                 </div>
-                <div id="team-list" class="team-list">
-                    <div class="loading">Loading team members...</div>
+
+                <!-- Requests Section -->
+                <div class="card">
+                    <h3 style="color: #1976d2; margin-bottom: 20px;">All Requests</h3>
+                    <div id="results-info" class="results-info"></div>
+                    <div id="requests-container">
+                        <div class="loading">Loading requests...</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Requests Section -->
-            <div class="card">
-                <h3 style="color: #1976d2; margin-bottom: 20px;">All Requests</h3>
-                <div id="requests-container">
-                    <div class="loading">Loading requests...</div>
+            <!-- Team Management Tab -->
+            <div id="team-tab" class="tab-content hidden">
+                <div class="card">
+                    <h3 style="color: #1976d2; margin-bottom: 15px;">Team Management</h3>
+                    <div class="team-input-row">
+                        <input type="text" id="new-member" placeholder="Enter team member name">
+                        <button onclick="addTeamMember()" class="btn">Add Member</button>
+                    </div>
+                    <div id="team-list" class="team-list">
+                        <div class="loading">Loading team members...</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -519,8 +683,38 @@
 
         // Global state
         let isAdminAuthenticated = false;
-        let requests = [];
+        let allRequests = [];
+        let filteredRequests = [];
         let teamMembers = [];
+        let currentFilters = {
+            status: '',
+            employee: ''
+        };
+        let currentTab = 'requests';
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+
+            currentTab = tabName;
+        }
+
+        // Get status group for filtering
+        function getStatusGroup(status) {
+            if (!status || status === 'new') return 'pending';
+            if (status === 'completed') return 'completed';
+            return 'in-progress'; // assigned, sourcing, options-found, paid
+        }
 
         // Authentication
         function checkAdminPassword() {
@@ -529,6 +723,7 @@
                 isAdminAuthenticated = true;
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('main-nav').classList.remove('hidden'); // Show navigation
                 document.getElementById('login-error').classList.add('hidden');
                 initializeDashboard();
             } else {
@@ -567,16 +762,16 @@
                 db.collection('requests')
                     .orderBy('timestamp', 'desc')
                     .onSnapshot((snapshot) => {
-                        requests = [];
+                        allRequests = [];
                         snapshot.forEach((doc) => {
                             const data = doc.data();
-                            requests.push({
+                            allRequests.push({
                                 id: doc.id,
                                 ...data,
                                 timestamp: data.timestamp?.toDate() || new Date()
                             });
                         });
-                        updateRequestsDisplay();
+                        applyFilters();
                         updateStats();
                         resolve();
                     }, (error) => {
@@ -599,6 +794,7 @@
                             }
                         });
                         updateTeamDisplay();
+                        updateEmployeeFilter();
                         resolve();
                     }, (error) => {
                         console.error('Error loading team members:', error);
@@ -607,31 +803,154 @@
             });
         }
 
+        // Update employee filter dropdown
+        function updateEmployeeFilter() {
+            const employeeFilter = document.getElementById('employee-filter');
+            const currentValue = employeeFilter.value;
+            
+            employeeFilter.innerHTML = '<option value="">All Employees</option>';
+            
+            // Add team members
+            teamMembers.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member;
+                option.textContent = member;
+                employeeFilter.appendChild(option);
+            });
+            
+            // Add "Unassigned" option
+            const unassignedOption = document.createElement('option');
+            unassignedOption.value = 'Unassigned';
+            unassignedOption.textContent = 'Unassigned';
+            employeeFilter.appendChild(unassignedOption);
+            
+            // Restore previous selection if it still exists
+            if (currentValue) {
+                employeeFilter.value = currentValue;
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const employeeFilter = document.getElementById('employee-filter').value;
+            
+            currentFilters = {
+                status: statusFilter,
+                employee: employeeFilter
+            };
+
+            filteredRequests = allRequests.filter(request => {
+                // Status filter (using grouped statuses)
+                if (statusFilter) {
+                    const requestStatusGroup = getStatusGroup(request.status);
+                    if (requestStatusGroup !== statusFilter) {
+                        return false;
+                    }
+                }
+                
+                // Employee filter
+                if (employeeFilter) {
+                    if (employeeFilter === 'Unassigned' && request.assignedTo) {
+                        return false;
+                    } else if (employeeFilter !== 'Unassigned' && request.assignedTo !== employeeFilter) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+
+            updateRequestsDisplay();
+            updateResultsInfo();
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('employee-filter').value = '';
+            currentFilters = {
+                status: '',
+                employee: ''
+            };
+            applyFilters();
+        }
+
+        // Update results info
+        function updateResultsInfo() {
+            const resultsInfo = document.getElementById('results-info');
+            let infoText = '';
+            
+            if (currentFilters.status || currentFilters.employee) {
+                const activeFilters = [];
+                if (currentFilters.status) {
+                    activeFilters.push(`Status: ${currentFilters.status}`);
+                }
+                if (currentFilters.employee) {
+                    activeFilters.push(`Employee: ${currentFilters.employee}`);
+                }
+                
+                infoText = `Showing ${filteredRequests.length} of ${allRequests.length} requests (Filtered by: ${activeFilters.join(', ')})`;
+            } else {
+                infoText = `Showing all ${allRequests.length} requests`;
+            }
+            
+            resultsInfo.textContent = infoText;
+        }
+
         // Update statistics
         function updateStats() {
-            document.getElementById('total-requests').textContent = requests.length;
-            document.getElementById('pending-requests').textContent = requests.filter(r => r.status === 'new' || !r.status).length;
+            const totalRequests = allRequests.length;
+            const pendingRequests = allRequests.filter(r => !r.status || r.status === 'new').length;
+            const inProgressRequests = allRequests.filter(r => {
+                const activeStatuses = ['assigned', 'sourcing', 'options-found', 'paid'];
+                return activeStatuses.includes(r.status);
+            }).length;
+            const completedRequests = allRequests.filter(r => r.status === 'completed').length;
+
+            document.getElementById('total-requests').textContent = totalRequests;
+            document.getElementById('pending-requests').textContent = pendingRequests;
+            document.getElementById('active-requests').textContent = inProgressRequests;
+            document.getElementById('completed-requests').textContent = completedRequests;
+        }
+
+        // FIXED: Generate assignment dropdown with proper selection
+        function generateAssignmentDropdown(requestId, currentAssignment) {
+            let options = '<option value="">Assign to team member...</option>';
             
-            const activeStatuses = ['assigned', 'sourcing', 'options-found', 'paid'];
-            document.getElementById('active-requests').textContent = requests.filter(r => activeStatuses.includes(r.status)).length;
-            document.getElementById('completed-requests').textContent = requests.filter(r => r.status === 'completed').length;
+            teamMembers.forEach(member => {
+                const selected = (currentAssignment === member) ? 'selected' : '';
+                options += `<option value="${member}" ${selected}>${member}</option>`;
+            });
+            
+            return `<select onchange="assignRequest('${requestId}', this.value)">${options}</select>`;
         }
 
         // Update requests display
+        
         function updateRequestsDisplay() {
             const container = document.getElementById('requests-container');
             
-            if (requests.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No Requests Yet</h3>
-                        <p>Requests will appear here as they come in from customers.</p>
-                    </div>
-                `;
+            if (filteredRequests.length === 0) {
+                if (allRequests.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No Requests Yet</h3>
+                            <p>Requests will appear here as they come in from customers.</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No Matching Requests</h3>
+                            <p>No requests match the current filter criteria. Try adjusting your filters.</p>
+                        </div>
+                    `;
+                }
                 return;
             }
 
-            container.innerHTML = requests.map(req => `
+            container.innerHTML = filteredRequests.map(req => `
                 <div class="request-item">
                     <div class="request-header">
                         <span class="request-id">${req.id}</span>
@@ -764,18 +1083,19 @@
             }
         }
 
-        // Assign request to team member
+        // Assign request to team member - FIXED VERSION
         async function assignRequest(requestId, memberName) {
             if (!memberName) return;
 
             try {
+                // Update both assignedTo and status in a single operation
                 await db.collection('requests').doc(requestId).update({
                     assignedTo: memberName,
-                    status: 'assigned',
+                    status: 'assigned', // Automatically set status to assigned
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                showSuccess(`Request assigned to ${memberName}`);
+                showSuccess(`Request assigned to ${memberName} and status updated to Assigned`);
             } catch (error) {
                 console.error('Error assigning request:', error);
                 showError('Failed to assign request. Please try again.');
