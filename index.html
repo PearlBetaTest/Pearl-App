@@ -1214,6 +1214,16 @@
             };
             return descriptions[status] || status;
         }
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         async function trackRequest() {
             const requestId = document.getElementById('track-id').value.trim();
             const resultsDiv = document.getElementById('track-results');
@@ -1241,13 +1251,13 @@
                 resultsDiv.innerHTML = `
             <div class="request-item">
                 <div class="request-header">
-                    <span class="request-id">${req.id}</span>
+                    <span class="request-id">${escapeHtml(req.id)}</span>
                     <span class="status-badge status-${req.status}">${getStatusDescription(req.status)}</span>
                 </div>
                 <div class="request-details">
                     <div class="detail-item">
                         <div class="detail-label">Item</div>
-                        <div class="detail-value">${req.item || ''}</div>
+                        <div class="detail-value">${escapeHtml(req.item)}</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Status</div>

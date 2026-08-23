@@ -881,6 +881,16 @@
             currentTab = tabName;
         }
 
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         // Get status group for filtering — maps both the current statuses
         // and any legacy granular statuses onto pending / in-progress / completed / cancelled
         function getStatusGroup(status) {
@@ -900,16 +910,17 @@
             return labels[group] || group;
         }
 
+        // Only these accounts are allowed into the dashboard, even if someone else
+        // signs up for a Firebase Auth account on this project.
+        const ADMIN_EMAILS = ['srbasescu@gmail.com'];
+
         // Authentication state observer
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 try {
-                    // Get the user's ID token and check for admin claim
-                    const idTokenResult = await user.getIdTokenResult();
+                    const isAllowedAdmin = !!user.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
 
-                    // For testing - remove admin check temporarily
-                    // if (idTokenResult.claims.admin === true) {
-                    if (user) { // Just check if user is authenticated
+                    if (isAllowedAdmin) {
                         isAdminAuthenticated = true;
                         showAdminDashboard();
                         initializeDashboard();
@@ -918,7 +929,7 @@
                         signOut();
                     }
                 } catch (error) {
-                    console.error('Error checking admin claims:', error);
+                    console.error('Error checking admin access:', error);
                     showError('Authentication error. Please try again.');
                     signOut();
                 }
@@ -1470,7 +1481,7 @@
                 // Generate team member options - always show all members
                 const teamMemberOptions = teamMembers.map(member => {
                     const selected = (req.assignedTo === member) ? 'selected' : '';
-                    return `<option value="${member}" ${selected}>${member}</option>`;
+                    return `<option value="${escapeHtml(member)}" ${selected}>${escapeHtml(member)}</option>`;
                 }).join('');
 
                 const statusGroup = getStatusGroup(req.status);
@@ -1478,34 +1489,34 @@
                 return `
         <div class="request-item">
             <div class="request-header">
-                <span class="request-id">${req.id}</span>
+                <span class="request-id">${escapeHtml(req.id)}</span>
                 <span class="status-badge status-${statusGroup}">${getStatusLabel(statusGroup)}</span>
             </div>
 
             <div class="request-details">
                 <div class="detail-item">
                     <div class="detail-label">Customer</div>
-                    <div class="detail-value">${req.name || 'Unknown'}</div>
+                    <div class="detail-value">${escapeHtml(req.name) || 'Unknown'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Item Requested</div>
-                    <div class="detail-value">${req.item || 'No item specified'}</div>
+                    <div class="detail-value">${escapeHtml(req.item) || 'No item specified'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">WhatsApp</div>
-                    <div class="detail-value">${req.whatsapp || 'Not provided'}</div>
+                    <div class="detail-value">${escapeHtml(req.whatsapp) || 'Not provided'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Budget Range</div>
-                    <div class="detail-value">${req.budget || 'Not specified'}</div>
+                    <div class="detail-value">${escapeHtml(req.budget) || 'Not specified'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Urgency</div>
-                    <div class="detail-value">${req.urgency || 'Flexible'}</div>
+                    <div class="detail-value">${escapeHtml(req.urgency) || 'Flexible'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Assigned To</div>
-                    <div class="detail-value">${req.assignedTo || 'Unassigned'}</div>
+                    <div class="detail-value">${escapeHtml(req.assignedTo) || 'Unassigned'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Date Submitted</div>
@@ -1518,19 +1529,19 @@
                 ${req.itemPrice ? `
                 <div class="detail-item">
                     <div class="detail-label">Item Price</div>
-                    <div class="detail-value">${req.itemPrice}</div>
+                    <div class="detail-value">${escapeHtml(req.itemPrice)}</div>
                 </div>
                 ` : ''}
                 ${req.serviceFee ? `
                 <div class="detail-item">
                     <div class="detail-label">Service Fee</div>
-                    <div class="detail-value">${req.serviceFee}</div>
+                    <div class="detail-value">${escapeHtml(req.serviceFee)}</div>
                 </div>
                 ` : ''}
                 ${req.deliveryNotes ? `
                 <div class="detail-item">
                     <div class="detail-label">Delivery Notes</div>
-                    <div class="detail-value">${req.deliveryNotes}</div>
+                    <div class="detail-value">${escapeHtml(req.deliveryNotes)}</div>
                 </div>
                 ` : ''}
             </div>
@@ -1538,7 +1549,7 @@
             ${req.description ? `
                 <div class="description-box">
                     <strong>Additional Details:</strong><br>
-                    ${req.description}
+                    ${escapeHtml(req.description)}
                 </div>
             ` : ''}
 
@@ -1616,8 +1627,8 @@
 
             container.innerHTML = teamMembers.map((member, index) => `
         <div class="team-member">
-            <span>${member}</span>
-            ${member !== 'You' ? `<button class="remove-member" onclick="removeTeamMember('${member}')" title="Remove ${member}">×</button>` : ''}
+            <span>${escapeHtml(member)}</span>
+            ${member !== 'You' ? `<button class="remove-member" onclick="removeTeamMember('${member}')" title="Remove ${escapeHtml(member)}">×</button>` : ''}
         </div>
     `).join('');
 
