@@ -5,7 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pearl - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --paper: #F6EEDE;
+            --paper-2: #EFE3CB;
+            --card: #FBF5E8;
+            --ink: #221D14;
+            --ink-soft: #5B5340;
+            --rust: #B7401E;
+            --rust-dark: #8E3016;
+            --leaf: #2E6B41;
+            --leaf-dark: #1F4C2E;
+            --gold: #D69A2D;
+            --line: rgba(34, 29, 20, 0.18);
+            --line-strong: rgba(34, 29, 20, 0.32);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,44 +31,75 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            color: var(--ink);
+            background: var(--paper);
             min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+            background-image: radial-gradient(rgba(34, 29, 20, 0.06) 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fraunces', serif;
+            font-weight: 500;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
             text-align: center;
-            color: #1565c0;
+            color: var(--ink);
             margin-bottom: 40px;
         }
 
         .header-title {
-             font-family: 'Montserrat', sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: 2.5em;
             margin: 0;
-            font-weight: 600;
-            color: #0d47a1;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--ink);
         }
 
         .header-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            color: #0d47a1;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--rust-dark);
         }
 
         .card {
-            background: white;
-            border-radius: 15px;
+            position: relative;
+            background: #FFFDF6;
+            border-radius: 3px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 8px 10px 0 rgba(34, 29, 20, 0.12);
+            border: 1px solid var(--line-strong);
             margin-bottom: 30px;
+        }
+
+        .card h2, .card h3 {
+            color: var(--ink);
+            font-weight: 500;
+            letter-spacing: -0.01em;
         }
 
         .login-card {
@@ -76,7 +125,7 @@
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 16px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Work Sans', sans-serif;
             transition: border-color 0.3s ease;
         }
 
@@ -88,22 +137,25 @@
         }
 
         .btn {
-            background: #4caf50;
-            color: white;
-            border: none;
+            background: var(--rust);
+            color: var(--paper);
+            border: 1px solid var(--rust-dark);
             padding: 15px 30px;
-            border-radius: 8px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            font-family: 'Work Sans', sans-serif;
+            letter-spacing: 0.01em;
+            transition: background 0.15s ease, transform 0.1s ease;
         }
 
         .btn:hover {
-            background: #43a047;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+            background: var(--rust-dark);
+        }
+
+        .btn:active {
+            transform: scale(0.99);
         }
 
         .btn-full {
@@ -111,23 +163,21 @@
         }
 
         .btn-secondary {
-            background: #6c757d;
-            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+            background: var(--ink-soft);
+            border-color: var(--ink);
         }
 
         .btn-secondary:hover {
-            background: #545b62;
-            box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+            background: var(--ink);
         }
 
         .btn-danger {
-            background: #f44336;
-            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+            background: #a13a2e;
+            border-color: #7a2c22;
         }
 
         .btn-danger:hover {
-            background: #d32f2f;
-            box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+            background: #7a2c22;
         }
 
         .hidden {
@@ -138,7 +188,7 @@
             background: #d4edda;
             color: #155724;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 3px;
             margin-bottom: 20px;
             border: 1px solid #c3e6cb;
         }
@@ -147,7 +197,7 @@
             background: #f8d7da;
             color: #721c24;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 3px;
             margin-bottom: 20px;
             border: 1px solid #f5c6cb;
         }
@@ -160,32 +210,64 @@
         }
 
         .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
+            background: #FFFDF6;
+            border: 2px solid var(--line-strong);
+            padding: 22px 20px;
+            border-radius: 3px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card.stat-total {
+            background: rgba(183, 64, 30, 0.1);
+            border-color: var(--rust);
+        }
+
+        .stat-card.stat-pending {
+            background: #fff3cd;
+            border-color: #c99a1f;
+        }
+
+        .stat-card.stat-progress {
+            background: #d1ecf1;
+            border-color: #4c92a3;
+        }
+
+        .stat-card.stat-completed {
+            background: #d4edda;
+            border-color: #3f8a56;
         }
 
         .stat-number {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #1976d2;
+            font-family: 'Fraunces', serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .stat-total .stat-number,
+        .stat-pending .stat-number,
+        .stat-progress .stat-number,
+        .stat-completed .stat-number {
+            color: #000;
         }
 
         .stat-label {
-            color: #666;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
             margin-top: 5px;
-            font-weight: 600;
         }
 
         /* Filter section */
         .filters {
-            background: white;
+            background: #FFFDF6;
+            border: 1px solid var(--line-strong);
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 3px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 8px 10px 0 rgba(34, 29, 20, 0.08);
         }
 
         .filter-row {
@@ -212,6 +294,7 @@
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 14px;
+            font-family: 'Work Sans', sans-serif;
             transition: border-color 0.3s ease;
         }
 
@@ -222,30 +305,29 @@
         }
 
         .clear-filters {
-            background: #ff9800;
-            color: white;
-            border: none;
+            background: var(--gold);
+            color: var(--ink);
+            border: 1px solid var(--rust-dark);
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
+            font-family: 'Work Sans', sans-serif;
             transition: all 0.3s ease;
             height: fit-content;
         }
 
         .clear-filters:hover {
-            background: #f57c00;
-            transform: translateY(-1px);
+            background: #c98a1f;
         }
 
         .request-item {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 15px;
+            background: var(--paper-2);
+            border: 1px solid var(--line-strong);
+            border-radius: 3px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
         .request-header {
@@ -258,47 +340,38 @@
         }
 
         .request-id {
-            font-weight: 600;
-            color: #1976d2;
-            font-size: 1.1em;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: var(--rust-dark);
+            font-size: 1em;
         }
 
         .status-badge {
-            padding: 8px 16px;
+            padding: 6px 15px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
         }
 
-        .status-new {
+        .status-pending {
             background: #fff3cd;
             color: #856404;
         }
 
-        .status-assigned {
+        .status-in-progress {
             background: #d1ecf1;
             color: #0c5460;
         }
 
-        .status-sourcing {
+        .status-completed {
             background: #d4edda;
             color: #155724;
         }
 
-        .status-options-found {
+        .status-cancelled {
             background: #e2e3e5;
-            color: #383d41;
-        }
-
-        .status-paid {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .status-completed {
-            background: #d1ecf1;
-            color: #0c5460;
+            color: #41464b;
         }
 
         .request-details {
@@ -309,33 +382,36 @@
         }
 
         .detail-item {
-            background: white;
+            background: #FFFDF6;
+            border: 1px solid var(--line-strong);
             padding: 12px;
-            border-radius: 8px;
-            border-left: 4px solid #2196f3;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            border-left: 4px solid var(--rust);
+            box-shadow: 2px 3px 0 rgba(34, 29, 20, 0.06);
         }
 
         .detail-label {
-            font-size: 12px;
-            color: #666;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--ink-soft);
             text-transform: uppercase;
             margin-bottom: 5px;
-            font-weight: 600;
         }
 
         .detail-value {
             font-weight: 600;
+            color: var(--ink);
             word-break: break-word;
         }
 
         .description-box {
             margin: 15px 0;
             padding: 15px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #4caf50;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            background: #FFFDF6;
+            border: 1px solid var(--line-strong);
+            border-radius: 3px;
+            border-left: 4px solid var(--leaf);
+            box-shadow: 2px 3px 0 rgba(34, 29, 20, 0.06);
         }
 
         .actions {
@@ -352,6 +428,7 @@
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 14px;
+            font-family: 'Work Sans', sans-serif;
             transition: border-color 0.3s ease;
         }
 
@@ -366,26 +443,17 @@
             color: white;
             text-decoration: none;
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 5px;
             font-size: 14px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 5px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
         .whatsapp-link:hover {
             background: #128c7e;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
-        }
-
-        .team-section {
-            border-top: 2px solid #e1e5e9;
-            padding-top: 20px;
-            margin-top: 20px;
         }
 
         .team-input-row {
@@ -411,18 +479,17 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: white;
+            background: var(--card);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
-            color: #1976d2;
-            border: 2px solid #e1e5e9;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            color: var(--rust-dark);
+            border: 1px solid var(--line-strong);
         }
 
         .remove-member {
-            background: #f44336;
+            background: var(--rust);
             color: white;
             border: none;
             border-radius: 50%;
@@ -437,78 +504,103 @@
         }
 
         .remove-member:hover {
-            background: #d32f2f;
+            background: var(--rust-dark);
             transform: scale(1.1);
         }
 
         .loading {
             text-align: center;
             padding: 2rem;
-            color: #666;
+            color: var(--ink-soft);
             font-style: italic;
         }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
-            color: #666;
+            color: var(--ink-soft);
         }
 
         .empty-state h3 {
-            color: #1976d2;
+            color: var(--ink);
             margin-bottom: 1rem;
         }
 
         .results-info {
-            color: #666;
-            font-size: 14px;
+            font-family: 'Space Mono', monospace;
+            color: var(--ink-soft);
+            font-size: 12px;
             margin-bottom: 20px;
-            font-style: italic;
         }
 
         /* Navigation styles */
         .main-nav {
-            background: transparent;
-            padding: 20px 20px 10px 20px;
-            text-align: left;
-            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: #FFFDF6;
+            border-bottom: 1px solid var(--line-strong);
+            box-shadow: 0 2px 10px rgba(34, 29, 20, 0.06);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-wordmark {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+
+        .nav-wordmark img {
+            width: 20px;
+            height: auto;
+            border-radius: 2px;
+        }
+
+        .nav-wordmark .dot {
+            color: var(--rust);
         }
 
         .nav-buttons {
             display: inline-flex;
-            gap: 0;
+            gap: 20px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-btn {
             background: transparent;
-            color: #0d47a1;
+            color: var(--ink-soft);
             border: none;
-            padding: 4px 8px;
+            border-bottom: 1px solid transparent;
+            padding: 4px 0;
             cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: color 0.15s ease, border-color 0.15s ease;
             white-space: nowrap;
-            position: relative;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-        }
-
-        .nav-btn:not(:last-child)::after {
-            content: '|';
-            position: absolute;
-            right: -1px;
-            color: #1976d2;
-            font-weight: normal;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .nav-btn:hover {
-            color: #1565c0;
+            color: var(--ink);
+            border-color: var(--line-strong);
         }
 
         .nav-btn.active {
-            color: #0d47a1;
+            color: var(--ink);
             font-weight: 600;
+            border-color: var(--rust);
         }
 
         .tab-content {
@@ -529,39 +621,39 @@
             display: inline-flex;
             align-items: center;
             gap: 15px;
-            background: white;
+            background: #FFFDF6;
+            border: 1px solid var(--line-strong);
             padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
         }
 
         .pagination-btn {
-            background: #4caf50;
+            background: var(--rust);
             color: white;
-            border: none;
+            border: 1px solid var(--rust-dark);
             padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
+            font-family: 'Work Sans', sans-serif;
             transition: all 0.3s ease;
         }
 
         .pagination-btn:hover:not(:disabled) {
-            background: #43a047;
-            transform: translateY(-1px);
+            background: var(--rust-dark);
         }
 
         .pagination-btn:disabled {
             background: #ccc;
+            border-color: #bbb;
             cursor: not-allowed;
-            transform: none;
         }
 
         .pagination-info {
-            font-size: 14px;
-            font-weight: 600;
-            color: #666;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: var(--ink-soft);
             min-width: 120px;
         }
 
@@ -611,7 +703,7 @@
             }
 
             .stat-number {
-                font-size: 2em;
+                font-size: 1.8em;
             }
 
             .filter-row {
@@ -627,18 +719,15 @@
     <div id="login-screen">
         <div class="container">
             <div class="header">
-                <div
-                    style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px;">
-                    <div style="width: 65px; height: 60px;">
-                        <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
-                    </div>
-                    <h1 class="header-title">Pearl</h1>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+                    <h1 class="header-title">Pearl<span style="color: var(--rust);">.</span></h1>
+                    <img src="images/Flag_map_of_Kenya.png" alt="Kenya" style="width: 24px; height: auto;" />
                 </div>
                 <p class="header-subtitle">Admin Dashboard</p>
             </div>
 
             <div class="card login-card">
-                <h2 style="text-align: center; margin-bottom: 2rem; color: #1976d2;">Admin Access</h2>
+                <h2 style="text-align: center; margin-bottom: 2rem;">Admin Access</h2>
 
                 <div class="form-group">
                     <label for="admin-email">Email</label>
@@ -660,6 +749,7 @@
     <div id="admin-dashboard" class="hidden">
         <!-- Navigation -->
         <div class="main-nav hidden" id="main-nav">
+            <div class="nav-wordmark">Pearl<span class="dot">.</span><img src="images/Flag_map_of_Kenya.png" alt="Kenya"></div>
             <div class="nav-buttons">
                 <button class="nav-btn active" onclick="switchTab('requests')">Requests</button>
                 <button class="nav-btn" onclick="switchTab('team')">Team Management</button>
@@ -668,31 +758,24 @@
 
         <div class="container">
             <div class="header">
-                <div
-                    style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px;">
-                    <div style="width: 65px; height: 60px;">
-                        <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
-                    </div>
-                    <h1 class="header-title">Pearl</h1>
-                </div>
-                <p class="header-subtitle">Admin Dashboard - Request Management</p>
+                <p class="header-subtitle">Admin Dashboard — Request Management</p>
             </div>
 
             <!-- Stats Cards -->
             <div class="stats">
-                <div class="stat-card">
+                <div class="stat-card stat-total">
                     <div class="stat-number" id="total-requests">-</div>
                     <div class="stat-label">Total Requests</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card stat-pending">
                     <div class="stat-number" id="pending-requests">-</div>
                     <div class="stat-label">Pending</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card stat-progress">
                     <div class="stat-number" id="active-requests">-</div>
                     <div class="stat-label">In Progress</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card stat-completed">
                     <div class="stat-number" id="completed-requests">-</div>
                     <div class="stat-label">Completed</div>
                 </div>
@@ -702,7 +785,7 @@
             <div id="requests-tab" class="tab-content active">
                 <!-- Filters -->
                 <div class="filters">
-                    <h3 style="color: #1976d2; margin-bottom: 15px;">Filter Requests</h3>
+                    <h3 style="margin-bottom: 15px;">Filter Requests</h3>
                     <div class="filter-row">
                         <div class="filter-group">
                             <label for="status-filter">Filter by Status</label>
@@ -711,6 +794,7 @@
                                 <option value="pending">Pending</option>
                                 <option value="in-progress">In Progress</option>
                                 <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
                             </select>
                         </div>
                         <div class="filter-group">
@@ -727,7 +811,7 @@
 
                 <!-- Requests Section -->
                 <div class="card">
-                    <h3 style="color: #1976d2; margin-bottom: 20px;">All Requests</h3>
+                    <h3 style="margin-bottom: 20px;">All Requests</h3>
                     <div id="results-info" class="results-info"></div>
                     <div id="requests-container">
                         <div class="loading">Loading requests...</div>
@@ -738,7 +822,7 @@
             <!-- Team Management Tab -->
             <div id="team-tab" class="tab-content hidden">
                 <div class="card">
-                    <h3 style="color: #1976d2; margin-bottom: 15px;">Team Management</h3>
+                    <h3 style="margin-bottom: 15px;">Team Management</h3>
                     <div class="team-input-row">
                         <input type="text" id="new-member" placeholder="Enter team member name">
                         <button onclick="addTeamMember()" class="btn">Add Member</button>
@@ -748,6 +832,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -779,7 +864,7 @@
         const itemsPerPage = 10;
         let currentTab = 'requests';
 
-        // Tab switching function - FIXED
+        // Tab switching function
         function switchTab(tabName) {
             // Update nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -796,11 +881,23 @@
             currentTab = tabName;
         }
 
-        // Get status group for filtering - FIXED
+        // Get status group for filtering — maps both the current statuses
+        // and any legacy granular statuses onto pending / in-progress / completed / cancelled
         function getStatusGroup(status) {
-            if (!status || status === 'new') return 'pending';
-            if (status === 'delivered') return 'completed'; // Changed from 'completed' to 'delivered'
-            return 'in-progress'; // assigned, sourcing, options-found, paid
+            if (!status || status === 'new' || status === 'pending') return 'pending';
+            if (status === 'delivered' || status === 'completed') return 'completed';
+            if (status === 'cancelled') return 'cancelled';
+            return 'in-progress'; // in-progress, assigned, sourcing, options-found, paid
+        }
+
+        function getStatusLabel(group) {
+            const labels = {
+                'pending': 'Pending',
+                'in-progress': 'In Progress',
+                'completed': 'Completed',
+                'cancelled': 'Cancelled'
+            };
+            return labels[group] || group;
         }
 
         // Authentication state observer
@@ -927,9 +1024,10 @@
                     }
                 });
             }
+
         });
 
-        // Load requests from Firestore - FIXED
+        // Load requests from Firestore
         function loadRequests() {
             return new Promise((resolve, reject) => {
                 if (!isAdminAuthenticated) {
@@ -960,7 +1058,7 @@
             });
         }
 
-        // Load team members from Firestore - FIXED
+        // Load team members from Firestore
         function loadTeamMembers() {
             return new Promise((resolve, reject) => {
                 if (!isAdminAuthenticated) {
@@ -988,7 +1086,7 @@
             });
         }
 
-        // Initialize dashboard data - FIXED
+        // Initialize dashboard data
         async function initializeDashboard() {
             if (!isAdminAuthenticated) return;
 
@@ -1011,7 +1109,7 @@
             }
         }
 
-        // Update employee filter dropdown - FIXED
+        // Update employee filter dropdown
         function updateEmployeeFilter() {
             const employeeFilter = document.getElementById('employee-filter');
             if (!employeeFilter) return;
@@ -1040,7 +1138,7 @@
             }
         }
 
-        // Apply filters - FIXED with pagination
+        // Apply filters — with pagination
         function applyFilters() {
             const statusFilter = document.getElementById('status-filter');
             const employeeFilter = document.getElementById('employee-filter');
@@ -1080,7 +1178,7 @@
             updatePaginationControls();
         }
 
-        // Clear all filters - FIXED
+        // Clear all filters
         function clearFilters() {
             const statusFilter = document.getElementById('status-filter');
             const employeeFilter = document.getElementById('employee-filter');
@@ -1096,7 +1194,7 @@
             applyFilters();
         }
 
-        // Update results info - FIXED with pagination
+        // Update results info — with pagination
         function updateResultsInfo() {
             const resultsInfo = document.getElementById('results-info');
             if (!resultsInfo) return;
@@ -1110,7 +1208,7 @@
             if (currentFilters.status || currentFilters.employee) {
                 const activeFilters = [];
                 if (currentFilters.status) {
-                    activeFilters.push(`Status: ${currentFilters.status}`);
+                    activeFilters.push(`Status: ${getStatusLabel(currentFilters.status)}`);
                 }
                 if (currentFilters.employee) {
                     activeFilters.push(`Employee: ${currentFilters.employee}`);
@@ -1124,15 +1222,12 @@
             resultsInfo.textContent = infoText;
         }
 
-        // Update statistics - FIXED
+        // Update statistics — grouped into pending / in-progress / completed
         function updateStats() {
             const totalRequests = allRequests.length;
-            const pendingRequests = allRequests.filter(r => !r.status || r.status === 'new').length;
-            const inProgressRequests = allRequests.filter(r => {
-                const activeStatuses = ['assigned', 'sourcing', 'options-found', 'paid'];
-                return activeStatuses.includes(r.status);
-            }).length;
-            const deliveredRequests = allRequests.filter(r => r.status === 'delivered').length; // Changed from 'completed' to 'delivered'
+            const pendingRequests = allRequests.filter(r => getStatusGroup(r.status) === 'pending').length;
+            const inProgressRequests = allRequests.filter(r => getStatusGroup(r.status) === 'in-progress').length;
+            const completedRequests = allRequests.filter(r => getStatusGroup(r.status) === 'completed').length;
 
             const totalEl = document.getElementById('total-requests');
             const pendingEl = document.getElementById('pending-requests');
@@ -1142,7 +1237,7 @@
             if (totalEl) totalEl.textContent = totalRequests;
             if (pendingEl) pendingEl.textContent = pendingRequests;
             if (activeEl) activeEl.textContent = inProgressRequests;
-            if (completedEl) completedEl.textContent = deliveredRequests; // This will show delivered count
+            if (completedEl) completedEl.textContent = completedRequests;
         }
 
         // Show delivery details modal
@@ -1152,7 +1247,7 @@
                 <div id="delivery-modal" class="modal-overlay" onclick="closeDeliveryModal(event)">
                     <div class="modal-content" onclick="event.stopPropagation()">
                         <div class="modal-header">
-                            <h3>Mark as Delivered</h3>
+                            <h3>Mark as Completed</h3>
                             <button class="modal-close" onclick="closeDeliveryModal()">&times;</button>
                         </div>
                         <div class="modal-body">
@@ -1171,7 +1266,7 @@
                         </div>
                         <div class="modal-footer">
                             <button onclick="closeDeliveryModal()" class="cancel-btn">Cancel</button>
-                            <button onclick="completeDelivery('${requestId}')" class="deliver-btn">Mark as Delivered</button>
+                            <button onclick="completeDelivery('${requestId}')" class="deliver-btn">Mark as Completed</button>
                         </div>
                     </div>
                 </div>
@@ -1179,7 +1274,7 @@
 
             // Add modal to page
             document.body.insertAdjacentHTML('beforeend', modalHTML);
-            
+
             // Add styles for the modal
             if (!document.getElementById('modal-styles')) {
                 const styles = document.createElement('style');
@@ -1191,37 +1286,41 @@
                         left: 0;
                         right: 0;
                         bottom: 0;
-                        background: rgba(0, 0, 0, 0.5);
+                        background: rgba(34, 29, 20, 0.5);
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         z-index: 1000;
                     }
                     .modal-content {
-                        background: white;
-                        border-radius: 8px;
+                        background: #FFFDF6;
+                        border: 1px solid var(--line-strong);
+                        border-radius: 3px;
                         width: 90%;
                         max-width: 500px;
                         max-height: 90vh;
                         overflow: auto;
+                        box-shadow: 8px 10px 0 rgba(34, 29, 20, 0.15);
                     }
                     .modal-header {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
                         padding: 20px 20px 10px;
-                        border-bottom: 1px solid #eee;
+                        border-bottom: 1px solid var(--line);
                     }
                     .modal-header h3 {
                         margin: 0;
-                        color: #333;
+                        font-family: 'Fraunces', serif;
+                        font-weight: 500;
+                        color: var(--ink);
                     }
                     .modal-close {
                         background: none;
                         border: none;
                         font-size: 24px;
                         cursor: pointer;
-                        color: #999;
+                        color: var(--ink-soft);
                         padding: 0;
                         width: 30px;
                         height: 30px;
@@ -1230,33 +1329,36 @@
                         justify-content: center;
                     }
                     .modal-close:hover {
-                        color: #333;
+                        color: var(--ink);
                     }
                     .modal-body {
                         padding: 20px;
                     }
-                    .form-group {
+                    .modal-body .form-group {
                         margin-bottom: 15px;
                     }
-                    .form-group label {
+                    .modal-body .form-group label {
                         display: block;
                         margin-bottom: 5px;
-                        font-weight: bold;
-                        color: #333;
+                        font-weight: 600;
+                        font-family: 'Work Sans', sans-serif;
+                        color: var(--ink);
                     }
-                    .form-group input,
-                    .form-group textarea {
+                    .modal-body .form-group input,
+                    .modal-body .form-group textarea {
                         width: 100%;
                         padding: 8px 12px;
-                        border: 1px solid #ddd;
-                        border-radius: 4px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 8px;
                         font-size: 14px;
+                        font-family: 'Work Sans', sans-serif;
                         box-sizing: border-box;
                     }
-                    .form-group input:focus,
-                    .form-group textarea:focus {
+                    .modal-body .form-group input:focus,
+                    .modal-body .form-group textarea:focus {
                         outline: none;
-                        border-color: #007bff;
+                        border-color: #2196f3;
+                        box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
                     }
                     .modal-footer {
                         padding: 10px 20px 20px;
@@ -1266,26 +1368,28 @@
                     }
                     .cancel-btn,
                     .deliver-btn {
-                        padding: 8px 16px;
-                        border: none;
-                        border-radius: 4px;
+                        padding: 10px 18px;
+                        border-radius: 3px;
                         cursor: pointer;
                         font-size: 14px;
+                        font-weight: 600;
+                        font-family: 'Work Sans', sans-serif;
                     }
                     .cancel-btn {
-                        background: #f8f9fa;
-                        color: #6c757d;
-                        border: 1px solid #dee2e6;
+                        background: var(--paper-2);
+                        color: var(--ink);
+                        border: 1px solid var(--line-strong);
                     }
                     .cancel-btn:hover {
-                        background: #e9ecef;
+                        background: var(--paper);
                     }
                     .deliver-btn {
-                        background: #28a745;
+                        background: var(--leaf);
                         color: white;
+                        border: 1px solid var(--leaf-dark);
                     }
                     .deliver-btn:hover {
-                        background: #218838;
+                        background: var(--leaf-dark);
                     }
                 `;
                 document.head.appendChild(styles);
@@ -1301,7 +1405,7 @@
             }
         }
 
-        // Complete delivery with price and notes
+        // Complete delivery with price and notes — sets status to 'completed'
         async function completeDelivery(requestId) {
             if (!isAdminAuthenticated) {
                 showError('Authentication required');
@@ -1313,7 +1417,7 @@
             const deliveryNotes = document.getElementById('delivery-notes').value.trim();
 
             const updateData = {
-                status: 'delivered',
+                status: 'completed',
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
@@ -1335,14 +1439,14 @@
             try {
                 await db.collection('requests').doc(requestId).update(updateData);
                 closeDeliveryModal();
-                showSuccess('Request marked as delivered successfully!');
+                showSuccess('Request marked as completed successfully!');
             } catch (error) {
-                console.error('Error updating to delivered:', error);
-                showError('Failed to mark as delivered: ' + error.message);
+                console.error('Error updating to completed:', error);
+                showError('Failed to mark as completed: ' + error.message);
             }
         }
 
-        // Update requests display - FIXED with pagination and improved team member dropdown
+        // Update requests display — with pagination and team member dropdown
         function updateRequestsDisplay() {
             const container = document.getElementById('requests-container');
             if (!container) return;
@@ -1363,19 +1467,21 @@
             const paginatedRequests = filteredRequests.slice(startIndex, endIndex);
 
             container.innerHTML = paginatedRequests.map(req => {
-                // Generate team member options - FIXED to always show all members
+                // Generate team member options - always show all members
                 const teamMemberOptions = teamMembers.map(member => {
                     const selected = (req.assignedTo === member) ? 'selected' : '';
                     return `<option value="${member}" ${selected}>${member}</option>`;
                 }).join('');
 
+                const statusGroup = getStatusGroup(req.status);
+
                 return `
         <div class="request-item">
             <div class="request-header">
                 <span class="request-id">${req.id}</span>
-                <span class="status-badge status-${req.status || 'new'}">${(req.status || 'new').replace('-', ' ')}</span>
+                <span class="status-badge status-${statusGroup}">${getStatusLabel(statusGroup)}</span>
             </div>
-            
+
             <div class="request-details">
                 <div class="detail-item">
                     <div class="detail-label">Customer</div>
@@ -1428,29 +1534,27 @@
                 </div>
                 ` : ''}
             </div>
-            
+
             ${req.description ? `
                 <div class="description-box">
                     <strong>Additional Details:</strong><br>
                     ${req.description}
                 </div>
             ` : ''}
-            
+
             <div class="actions">
                 <select onchange="assignRequest('${req.id}', this.value)">
                     <option value="">Assign to team member...</option>
                     ${teamMemberOptions}
                 </select>
-                
+
                 <select onchange="updateStatusHandler('${req.id}', this.value)">
-                    <option value="new" ${(req.status === 'new' || !req.status) ? 'selected' : ''}>New</option>
-                    <option value="assigned" ${req.status === 'assigned' ? 'selected' : ''}>Assigned</option>
-                    <option value="sourcing" ${req.status === 'sourcing' ? 'selected' : ''}>Sourcing</option>
-                    <option value="options-found" ${req.status === 'options-found' ? 'selected' : ''}>Options Found</option>
-                    <option value="paid" ${req.status === 'paid' ? 'selected' : ''}>Paid</option>
-                    <option value="delivered" ${req.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                    <option value="pending" ${statusGroup === 'pending' ? 'selected' : ''}>Pending</option>
+                    <option value="in-progress" ${statusGroup === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="completed" ${statusGroup === 'completed' ? 'selected' : ''}>Completed</option>
+                    <option value="cancelled" ${statusGroup === 'cancelled' ? 'selected' : ''}>Cancelled</option>
                 </select>
-                                    
+
                 ${req.whatsapp ? `
                     <a href="https://wa.me/${req.whatsapp.replace(/[^\d]/g, '')}?text=Hi ${encodeURIComponent(req.name || 'there')}! This is regarding your Pearl request ${req.id} for '${encodeURIComponent(req.item)}'. " class="whatsapp-link" target="_blank">
                         📱 Contact Customer
@@ -1505,7 +1609,7 @@
             updatePaginationControls();
         }
 
-        // Update team members display - FIXED
+        // Update team members display
         function updateTeamDisplay() {
             const container = document.getElementById('team-list');
             if (!container) return;
@@ -1521,7 +1625,7 @@
             updateRequestsDisplay();
         }
 
-        // Add team member - FIXED
+        // Add team member
         async function addTeamMember() {
             if (!isAdminAuthenticated) {
                 showError('Authentication required');
@@ -1553,7 +1657,7 @@
             }
         }
 
-        // Remove team member - FIXED
+        // Remove team member
         async function removeTeamMember(memberName) {
             if (!isAdminAuthenticated) {
                 showError('Authentication required');
@@ -1580,7 +1684,7 @@
             }
         }
 
-        // Assign request to team member - FIXED
+        // Assign request to team member — assigning moves the status to In Progress
         async function assignRequest(requestId, memberName) {
             if (!isAdminAuthenticated) {
                 showError('Authentication required');
@@ -1592,31 +1696,31 @@
             try {
                 await db.collection('requests').doc(requestId).update({
                     assignedTo: memberName,
-                    status: 'assigned',
+                    status: 'in-progress',
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                showSuccess(`Request assigned to ${memberName} and status updated to Assigned`);
+                showSuccess(`Request assigned to ${memberName} and status updated to In Progress`);
             } catch (error) {
                 console.error('Error assigning request:', error);
                 showError('Failed to assign request: ' + error.message);
             }
         }
 
-        // Status update handler - NEW function to handle delivered status specially
+        // Status update handler — 'completed' opens the same form used for delivery
         function updateStatusHandler(requestId, newStatus) {
-            if (newStatus === 'delivered') {
+            if (newStatus === 'completed') {
                 showDeliveryModal(requestId);
-                // Reset the dropdown to its previous value
+                // Reset the dropdown to its previous value until the form is submitted
                 const selectElement = event.target;
                 const currentRequest = filteredRequests.find(r => r.id === requestId);
-                selectElement.value = currentRequest ? (currentRequest.status || 'new') : 'new';
+                selectElement.value = currentRequest ? getStatusGroup(currentRequest.status) : 'pending';
             } else {
                 updateStatus(requestId, newStatus);
             }
         }
 
-        // Update request status - FIXED
+        // Update request status
         async function updateStatus(requestId, newStatus) {
             if (!isAdminAuthenticated) {
                 showError('Authentication required');
@@ -1631,23 +1735,14 @@
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                const statusLabels = {
-                    'new': 'New',
-                    'assigned': 'Assigned',
-                    'sourcing': 'Sourcing',
-                    'options-found': 'Options Found',
-                    'paid': 'Paid',
-                    'delivered': 'Delivered'
-                };
-
-                showSuccess(`Status updated to ${statusLabels[newStatus] || newStatus}`);
+                showSuccess(`Status updated to ${getStatusLabel(newStatus)}`);
             } catch (error) {
                 console.error('Error updating status:', error);
                 showError('Failed to update status: ' + error.message);
             }
         }
 
-        // Utility functions - FIXED
+        // Utility functions
         function showError(message) {
             const container = document.querySelector('.container');
             if (!container) return;

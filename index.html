@@ -5,7 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pearl - Get Anything, Sourced Locally</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --paper: #F6EEDE;
+            --paper-2: #EFE3CB;
+            --card: #FBF5E8;
+            --ink: #221D14;
+            --ink-soft: #5B5340;
+            --rust: #B7401E;
+            --rust-dark: #8E3016;
+            --leaf: #2E6B41;
+            --leaf-dark: #1F4C2E;
+            --gold: #D69A2D;
+            --line: rgba(34, 29, 20, 0.18);
+            --line-strong: rgba(34, 29, 20, 0.32);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,86 +31,254 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            color: var(--ink);
+            background: var(--paper);
             min-height: 100vh;
+            position: relative;
+        }
+
+        body.pin-bottom {
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.pin-bottom .container {
+            flex: 1 0 auto;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+            background-image: radial-gradient(rgba(34, 29, 20, 0.06) 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fraunces', serif;
+            font-weight: 500;
+        }
+
+        .card h2 {
+            color: var(--ink);
+            font-size: 1.6em;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
         }
 
         .main-nav {
-            background: transparent;
-            padding: 20px 20px 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: #FFFDF6;
+            border-bottom: 1px solid var(--line-strong);
+            box-shadow: 0 2px 10px rgba(34, 29, 20, 0.06);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
             text-align: left;
+        }
+
+        .nav-wordmark {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+
+        .nav-wordmark img {
+            width: 20px;
+            height: auto;
+            border-radius: 2px;
+        }
+
+        .nav-wordmark .dot {
+            color: var(--rust);
         }
 
         .nav-buttons {
             display: inline-flex;
-            gap: 0;
+            gap: 20px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-btn {
             background: transparent;
-            color: #0d47a1;
+            color: var(--ink-soft);
             border: none;
-            padding: 4px 8px;
+            border-bottom: 1px solid transparent;
+            padding: 4px 0;
             cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: color 0.15s ease, border-color 0.15s ease;
             white-space: nowrap;
-            position: relative;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-        }
-
-        .nav-btn:not(:last-child)::after {
-            content: '|';
-            position: absolute;
-            right: -1px;
-            color: #1976d2;
-            font-weight: normal;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .nav-btn:hover {
-            color: #1565c0;
+            color: var(--ink);
+            border-color: var(--line-strong);
         }
 
         .nav-btn.active {
-            color: #0d47a1;
+            color: var(--ink);
             font-weight: 600;
+            border-color: var(--rust);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 640px;
+            width: 100%;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
-            text-align: center;
-            color: #1565c0;
+            text-align: left;
+            color: var(--ink);
             margin-bottom: 40px;
         }
 
-        .header-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.5em;
-            margin: 0;
-            font-weight: 600;
-            color: #0d47a1;
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #8A5E14;
+            background: rgba(214, 154, 45, 0.14);
+            border: 1px solid rgba(214, 154, 45, 0.4);
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 22px;
         }
 
-        .header-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            color: #0d47a1;
+        .eyebrow .pulse {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #D69A2D;
+            box-shadow: 0 0 0 3px rgba(214, 154, 45, 0.25);
+            animation: pulseDot 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0% { background: #D69A2D; box-shadow: 0 0 0 3px rgba(214, 154, 45, 0.3); transform: scale(1); }
+            50% { background: #F2C766; box-shadow: 0 0 0 7px rgba(214, 154, 45, 0.4); transform: scale(1.3); }
+            100% { background: #D69A2D; box-shadow: 0 0 0 3px rgba(214, 154, 45, 0.3); transform: scale(1); }
+        }
+
+        .hero-headline {
+            font-family: 'Fraunces', serif;
+            font-weight: 500;
+            font-size: 2.5em;
+            line-height: 1.08;
+            letter-spacing: -0.015em;
+            margin: 0 0 20px;
+            color: var(--ink);
+        }
+
+        .hero-headline em {
+            font-style: italic;
+            font-weight: 500;
+            color: var(--rust);
+        }
+
+        .hero-sub {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.8em;
+            line-height: 1.3;
+            color: var(--ink);
+            margin: 0 0 28px;
+        }
+
+        .process-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--rust-dark);
+            margin-bottom: 10px;
+        }
+
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            column-gap: 8px;
+            row-gap: 10px;
+            margin: 2px 0 4px;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1;
+            font-size: 13px;
+            color: #221D14;
+            font-weight: 600;
+            white-space: nowrap;
+            background: #FBF5E8;
+            border: 1px solid rgba(34, 29, 20, 0.32);
+            border-radius: 3px;
+            padding: 8px 12px;
+        }
+
+        .process-num {
+            width: 18px;
+            height: 18px;
+            flex: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2E6B41;
+            color: #F6EEDE;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .process-arrow {
+            flex: none;
+            color: var(--ink-soft);
+            font-size: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .process-arrow {
+                display: none;
+            }
         }
 
         .card {
-            background: white;
-            border-radius: 15px;
+            position: relative;
+            background: #FFFDF6;
+            border-radius: 3px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 8px 10px 0 rgba(34, 29, 20, 0.12);
+            border: 1px solid var(--line-strong);
             margin-bottom: 30px;
         }
 
@@ -115,7 +301,7 @@
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 16px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Work Sans', sans-serif;
             transition: border-color 0.3s ease;
         }
 
@@ -133,31 +319,35 @@
         }
 
         .btn {
-            background: #4caf50;
-            color: white;
-            border: none;
+            background: var(--rust);
+            color: var(--paper);
+            border: 1px solid var(--rust-dark);
             padding: 15px 30px;
-            border-radius: 8px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            font-family: 'Work Sans', sans-serif;
+            letter-spacing: 0.01em;
+            transition: background 0.15s ease, transform 0.1s ease;
             width: 100%;
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
         }
 
         .btn:hover {
-            background: #43a047;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+            background: var(--rust-dark);
+        }
+
+        .btn:active {
+            transform: scale(0.99);
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: var(--ink-soft);
+            border-color: var(--ink);
         }
 
         .btn-secondary:hover {
-            background: #545b62;
+            background: var(--ink);
         }
 
         .hidden {
@@ -174,9 +364,9 @@
         }
 
         .request-item {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
+            background: var(--paper-2);
+            border: 1px solid var(--line-strong);
+            border-radius: 3px;
             padding: 20px;
             margin-bottom: 15px;
         }
@@ -191,8 +381,9 @@
         }
 
         .request-id {
-            font-weight: 600;
-            color: #1976d2;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: var(--rust-dark);
         }
 
         .status-badge {
@@ -203,34 +394,19 @@
             text-transform: uppercase;
         }
 
-        .status-new {
+        .status-pending {
             background: #fff3cd;
             color: #856404;
         }
 
-        .status-assigned {
+        .status-in-progress {
             background: #d1ecf1;
             color: #0c5460;
-        }
-
-        .status-sourcing {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-options-found {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-paid {
-            background: #e2e3e5;
-            color: #383d41;
         }
 
         .status-completed {
-            background: #d1ecf1;
-            color: #0c5460;
+            background: #d4edda;
+            color: #155724;
         }
 
         .request-details {
@@ -241,21 +417,23 @@
         }
 
         .detail-item {
-            background: white;
+            background: var(--card);
             padding: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #2196f3;
+            border-radius: 3px;
+            border-left: 4px solid var(--rust);
         }
 
         .detail-label {
-            font-size: 12px;
-            color: #666;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--ink-soft);
             text-transform: uppercase;
             margin-bottom: 5px;
         }
 
         .detail-value {
             font-weight: 600;
+            color: var(--ink);
         }
 
         .actions {
@@ -292,6 +470,27 @@
             min-width: 150px;
         }
 
+        .consent-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .consent-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            accent-color: var(--rust);
+        }
+
+        .consent-row label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 400;
+            color: #555;
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -300,42 +499,44 @@
         }
 
         .stat-card {
-            background: white;
+            background: var(--card);
+            border: 1px solid var(--line-strong);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 3px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .stat-number {
+            font-family: 'Fraunces', serif;
             font-size: 2em;
-            font-weight: 700;
-            color: #1976d2;
+            font-weight: 600;
+            color: var(--rust-dark);
         }
 
         .stat-label {
-            color: #666;
+            color: var(--ink-soft);
             margin-top: 5px;
         }
 
         /* FAQ Styles */
         .faq-item {
-            border: 1px solid #e1e5e9;
-            border-radius: 8px;
+            border: 1px solid var(--line-strong);
+            border-radius: 3px;
             margin-bottom: 10px;
             overflow: hidden;
             transition: all 0.3s ease;
         }
 
         .faq-question {
-            background: #f8f9fa;
+            background: var(--paper-2);
             padding: 20px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-family: 'Work Sans', sans-serif;
             font-weight: 600;
-            color: #1976d2;
+            color: var(--ink);
             border: none;
             font-size: 16px;
             width: 100%;
@@ -344,17 +545,17 @@
         }
 
         .faq-question:hover {
-            background: #e9ecef;
+            background: var(--paper);
         }
 
         .faq-question.active {
-            background: #e3f2fd;
+            background: var(--card);
         }
 
         .faq-toggle {
             font-size: 18px;
             font-weight: bold;
-            color: #1976d2;
+            color: var(--rust);
             transition: transform 0.3s ease;
         }
 
@@ -367,7 +568,7 @@
             max-height: 0;
             overflow: hidden;
             transition: all 0.3s ease;
-            background: white;
+            background: var(--card);
         }
 
         .faq-answer.active {
@@ -377,30 +578,30 @@
 
         .faq-answer p {
             margin: 0;
-            color: #666;
+            color: var(--ink-soft);
             line-height: 1.6;
         }
 
         .contact-section {
-            background: #f8f9fa;
-            border-radius: 8px;
+            background: var(--paper-2);
+            border-radius: 3px;
             padding: 20px;
             margin-top: 30px;
-            border-left: 4px solid #2196f3;
+            border-left: 4px solid var(--rust);
         }
 
         .contact-section h3 {
-            color: #1976d2;
+            color: var(--ink);
             margin-bottom: 10px;
         }
 
         .contact-section p {
             margin: 5px 0;
-            color: #666;
+            color: var(--ink-soft);
         }
 
         .contact-email {
-            color: #1976d2;
+            color: var(--rust-dark);
             text-decoration: none;
             font-weight: 600;
         }
@@ -424,13 +625,35 @@
         }
 
         .modal-content {
-            background: white;
-            border-radius: 15px;
+            background: var(--card);
+            border-radius: 3px;
             padding: 30px;
             max-width: 400px;
             width: 90%;
             margin: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 6px 8px 0 rgba(34, 29, 20, 0.1);
+        }
+
+        .skyline-footer {
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            margin-top: -220px;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .skyline-footer.flush {
+            margin-top: 0;
+        }
+
+        .skyline-footer img {
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0.9;
         }
 
         @media (max-width: 768px) {
@@ -477,6 +700,7 @@
 
 <body>
     <div class="main-nav">
+        <div class="nav-wordmark">Pearl<span class="dot">.</span><img src="images/Flag_map_of_Kenya.png" alt="Kenya"></div>
         <div class="nav-buttons">
             <button class="nav-btn active" data-section="user">Submit Request</button>
             <button class="nav-btn" data-section="track">Track Request</button>
@@ -486,48 +710,40 @@
     </div>
 
     <div class="container">
-        <div class="header">
-
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;">
-                
-
-                <!-- Centered logo + title below -->
-                <div style="display: flex; align-items: center; gap: 5px;">
-                    <div style="width: 65px; height: 60px;">
-                        <img src="images/logo_svg.svg" alt="Pearl shell logo" style="width: 100%; height: 100%;" />
-                    </div>
-                    <h1 class="header-title">Pearl</h1>
-                </div>
-
-                <p class="header-subtitle">Nairobi - get anything, sourced locally</p>
-                 <!-- Flag on top -->
-                <div style="width: 60px; height: 70px;">
-                    <img src="images/Flag_map_of_Kenya.png" alt="Flag" style="width: 100%; height: 100%;" />
-                </div>
-        
+        <div class="header" id="hero-header">
+            <span class="eyebrow"><span class="pulse"></span>Now sourcing in Nairobi</span>
+            <p class="hero-sub">Send a request using the form below. We'll find your item and deliver it to your door.</p>
+            <div class="process-label">How it works</div>
+            <div class="process-flow">
+                <div class="process-step"><span class="process-num">1</span>Submit request</div>
+                <span class="process-arrow">→</span>
+                <div class="process-step"><span class="process-num">2</span>Options proposed</div>
+                <span class="process-arrow">→</span>
+                <div class="process-step"><span class="process-num">3</span>Select your choice</div>
+                <span class="process-arrow">→</span>
+                <div class="process-step"><span class="process-num">4</span>Pay your team member</div>
+                <span class="process-arrow">→</span>
+                <div class="process-step"><span class="process-num">5</span>Delivery</div>
             </div>
-            
-           
         </div>
 
         <!-- User Request Section -->
         <div id="user-section" class="card">
-            <h2>What do you need?</h2>
-            <p style="margin-bottom: 25px; color: #666;">Get low prices and quality items delivered straight to your door. No payment upfront — only pay once we acquire the right item for you. </p>
+            <h2 style="margin-bottom: 25px;">Tell us what you're looking for</h2>
 
             <form id="request-form">
                 <div class="form-group">
-                    <label for="name">Full Name <span style="color: red;">*</span></label>
+                    <label for="name">Full Name <span style="color: var(--rust);">*</span></label>
                     <input type="text" id="name" required placeholder="Enter your name">
                 </div>
 
                 <div class="form-group">
-                    <label for="whatsapp">WhatsApp Number <span style="color: red;">*</span></label>
+                    <label for="whatsapp">WhatsApp Number <span style="color: var(--rust);">*</span></label>
                     <input type="tel" id="whatsapp" required placeholder="254 7XX XXX XXX">
                 </div>
 
                 <div class="form-group">
-                    <label for="item">Item Needed <span style="color: red;">*</span></label>
+                    <label for="item">Item Needed <span style="color: var(--rust);">*</span></label>
                     <input type="text" id="item" required
                         placeholder="e.g., Computer monitor, blender, boda boda helmet, etc.">
                 </div>
@@ -541,8 +757,7 @@
                 <div class="form-group">
                     <label for="budget">Budget Range (KES)</label>
                     <select id="budget">
-                        <option value="">Select budget range</option>
-                        <option value="Don't know">Don't know</option>
+                        <option value="Don't know" selected>Don't know</option>
                         <option value="under-1000">Under 1,000 KES</option>
                         <option value="1000-5000">1,000 - 5,000 KES</option>
                         <option value="5000-10000">5,000 - 10,000 KES</option>
@@ -561,18 +776,16 @@
                 </div>
 
                 <div class="form-group" style="width: 100%;">
-                    <div
-                        style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-start;">
+                    <div class="consent-row">
                         <input type="checkbox" id="consent" required>
-                        <label for="consent" style="cursor: pointer; margin: 0;">
-                            I agree to be contacted by a Pearl team member regarding my request
-                            <span style="color: red;">*</span>
+                        <label for="consent">
+                            I agree to be contacted by a Pearl team member regarding my request<span style="color: var(--rust);">&nbsp;*</span>
                         </label>
                     </div>
                 </div>
 
                 <button type="submit" class="btn" onclick="submitRequest(event)">Submit Request</button>
-                <p style="margin-top: 15px; font-size: 14px; color: #666; text-align: center;">
+                <p style="margin-top: 15px; font-size: 14px; color: var(--ink-soft); text-align: center;">
                     Standard service fee: 500 KES • We'll find the best options for you
                 </p>
             </form>
@@ -599,66 +812,66 @@
                 <div style="display: grid; gap: 25px;">
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: transparent; color: var(--leaf-dark); border: 1px solid var(--leaf-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             1</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">User Submits Request</h3>
-                            <p style="color: #666; line-height: 1.6;">Fill out our simple form with details about what
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Submit Request</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">Fill out our simple form with details about what
                                 you need. Include specifications, budget, and timeline.</p>
                         </div>
                     </div>
 
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: transparent; color: var(--leaf-dark); border: 1px solid var(--leaf-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             2</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">Request Reviewed</h3>
-                            <p style="color: #666; line-height: 1.6;">Our team reviews your request and assigns it to a
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Request Reviewed</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">Our team reviews your request and assigns it to a
                                 specialist team member with expertise in sourcing your specific item.</p>
                         </div>
                     </div>
 
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: transparent; color: var(--leaf-dark); border: 1px solid var(--leaf-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             3</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">Sourcing & Options Proposed</h3>
-                            <p style="color: #666; line-height: 1.6;">Your assigned team member will research local
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Sourcing & Options Proposed</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">Your assigned team member will research local
                                 suppliers and reach out with purchasing options, prices, and availability details.</p>
                         </div>
                     </div>
 
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: transparent; color: var(--leaf-dark); border: 1px solid var(--leaf-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             4</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">Option Selection</h3>
-                            <p style="color: #666; line-height: 1.6;">Review the presented options and select your
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Option Selection</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">Review the presented options and select your
                                 preferred choice based on price, quality, and delivery timeline.</p>
                         </div>
                     </div>
 
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: transparent; color: var(--leaf-dark); border: 1px solid var(--leaf-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             5</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">Payment</h3>
-                            <p style="color: #666; line-height: 1.6;">Pay your team member for the item cost and service
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Payment</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">Pay your team member for the item cost and service
                                 fee. Multiple payment methods accepted.</p>
                         </div>
                     </div>
 
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: transparent; color: var(--leaf-dark); border: 1px solid var(--leaf-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             6</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">Delivery Coordination</h3>
-                            <p style="color: #666; line-height: 1.6;">You and your team member will agree on the best
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Delivery Coordination</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">You and your team member will agree on the best
                                 delivery method - pickup, local delivery, or shipping. Additional delivery fees may
                                 apply.</p>
                         </div>
@@ -666,21 +879,21 @@
 
                     <div style="display: flex; align-items: flex-start; gap: 20px;">
                         <div
-                            style="background: #4caf50; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0;">
+                            style="background: var(--rust); color: var(--paper); border: 1px solid var(--rust-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 16px; flex-shrink: 0;">
                             7</div>
                         <div>
-                            <h3 style="color: #1976d2; margin-bottom: 8px;">Item Delivery</h3>
-                            <p style="color: #666; line-height: 1.6;">Receive your item according to the agreed delivery
+                            <h3 style="color: var(--ink); margin-bottom: 8px; font-size: 1.15em;">Item Delivery</h3>
+                            <p style="color: var(--ink-soft); line-height: 1.6;">Receive your item according to the agreed delivery
                                 method and timeline. Request completed!</p>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #ff9800;">
-                    <p style="color: #666; margin: 0; font-style: italic;"><strong>Note:</strong> This process may
-                        differ when providing services as compared to goods. Service requests may involve different
-                        evaluation and delivery methods.</p>
+                    style="background: var(--paper-2); padding: 20px; border-radius: 3px; margin-top: 30px; border-left: 4px solid var(--gold);">
+                    <p style="color: var(--ink-soft); margin: 0; font-style: italic;"><strong>Note:</strong> This process may
+                        differ when providing services (e.g. electronic rentals) as compared to goods. Service requests may involve different
+                        pricing and delivery methods.</p>
                 </div>
             </div>
         </div>
@@ -740,7 +953,7 @@
                     <span class="faq-toggle">+</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Our standard service fee is 500 KES per request, which you only pay once you are satisfied we have found the right item. 
+                    <p>Our standard service fee is 500 KES per request, which you only pay once you are satisfied we have found the right item.
                         You’ll pay this fee on top of the cost of the items and any delivery charges. For urgent requests or high-value items, there may be a slightly higher fee, but we’ll always let you know before making any purchases.</p>
                 </div>
             </div>
@@ -792,50 +1005,55 @@
     top:40px;
     left:50%;
     transform:translateX(-50%);
-    background:white;
+    background:var(--card);
     padding:16px 20px;
-    border:1px solid #ddd;
-    border-radius:16px;
-    box-shadow:0 4px 16px rgba(0,0,0,0.15);
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    box-shadow:6px 8px 0 rgba(34,29,20,0.1);
     z-index:10000;
     max-width:350px;
     text-align:center;
-    font-family: sans-serif;
+    font-family: 'Work Sans', sans-serif;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
 ">
-            <h3 style="margin:0 0 8px 0; font-size:18px; color:#333;">Request Submitted!</h3>
-            <p style="margin:0 0 10px 0; font-size:14px; color:#555;">We will contact you shortly about your request.
+            <h3 style="margin:0 0 8px 0; font-size:18px; color:var(--ink);">Request Submitted!</h3>
+            <p style="margin:0 0 10px 0; font-size:14px; color:var(--ink-soft);">We will contact you shortly about your request.
                 Please save this ID for tracking:</p>
             <div id="custom-alert-id" style="
         padding:8px 12px;
-        background:#f7f7f7;
-        border-radius:8px;
+        background:var(--paper-2);
+        border-radius:3px;
         margin-bottom:12px;
         user-select:text;
+        font-family: 'Space Mono', monospace;
         font-weight:bold;
         font-size:15px;
-        color:#222;
+        color:var(--ink);
     "></div>
             <button onclick="copyAlertId()" style="
         padding:6px 12px;
-        background:#007bff;
-        color:white;
+        background:var(--rust);
+        color:var(--paper);
         border:none;
-        border-radius:6px;
+        border-radius:3px;
         cursor:pointer;
     ">📋 Copy ID</button>
             <button onclick="closeCustomAlert()" style="
         padding:6px 12px;
-        background:#e0e0e0;
-        color:#333;
+        background:var(--paper-2);
+        color:var(--ink);
         border:none;
-        border-radius:6px;
+        border-radius:3px;
         cursor:pointer;
         margin-left:8px;
     ">Close</button>
         </div>
 
+    </div>
+
+    <div class="skyline-footer" id="skyline-footer">
+        <img src="images/city-skyline.png" alt="Nairobi skyline">
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -878,6 +1096,15 @@
             // Show selected section
             const selectedEl = document.getElementById(sectionName + '-section');
             if (selectedEl) selectedEl.classList.remove('hidden');
+
+            // Hero header only shows on the Submit Request tab
+            const heroHeader = document.getElementById('hero-header');
+            if (heroHeader) heroHeader.classList.toggle('hidden', sectionName !== 'user');
+
+            // Track Request's card is short, so pin the skyline to the true bottom of the page instead of overlapping it
+            const skylineFooter = document.getElementById('skyline-footer');
+            if (skylineFooter) skylineFooter.classList.toggle('flush', sectionName === 'track');
+            document.body.classList.toggle('pin-bottom', sectionName === 'track');
         }
 
         function toggleFAQ(button) {
@@ -951,7 +1178,7 @@
                     budget,
                     urgency,
                     consent,
-                    status: 'new'
+                    status: 'pending'
                 });
 
                 // Show the unique tracking ID to the user
@@ -974,12 +1201,16 @@
 
         function getStatusDescription(status) {
             const descriptions = {
+                'pending': 'Request received, awaiting assignment',
+                'in-progress': 'Being sourced by our team',
+                'completed': 'Item purchased and delivered',
+                // legacy statuses, kept for older requests
                 'new': 'Request received, awaiting assignment',
                 'assigned': 'Assigned to team member',
                 'sourcing': 'Actively searching for your item',
                 'options-found': 'Found options, waiting for your choice',
                 'paid': 'Payment received',
-                'completed': 'Item purchased and delivered'
+                'delivered': 'Item purchased and delivered'
             };
             return descriptions[status] || status;
         }
