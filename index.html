@@ -212,6 +212,27 @@
             margin: 0 0 28px;
         }
 
+        .trust-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #FFFDF6;
+            border: 1px solid var(--line-strong);
+            border-radius: 3px;
+            padding: 8px 14px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 24px;
+        }
+
+        .trust-banner::before {
+            content: '★';
+            color: var(--gold);
+            font-size: 13px;
+        }
+
         .process-label {
             font-family: 'Space Mono', monospace;
             font-size: 12px;
@@ -713,6 +734,7 @@
         <div class="header" id="hero-header">
             <span class="eyebrow"><span class="pulse"></span>Now sourcing in Nairobi</span>
             <p class="hero-sub">Send a request using the form below. We'll find your item and deliver it to your door.</p>
+            <div class="trust-banner">Trusted by 50+ customers across Nairobi</div>
             <div class="process-label">How it works</div>
             <div class="process-flow">
                 <div class="process-step"><span class="process-num">1</span>Submit request</div>
