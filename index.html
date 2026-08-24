@@ -752,12 +752,7 @@
                     <label for="description">Detailed Description</label>
                     <textarea id="description"
                         placeholder="Specific model, color, specifications, quantity needed, etc."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="photo">Photo (optional)</label>
-                    <input type="file" id="photo" accept="image/*">
-                    <p style="margin-top: 6px; font-size: 12px; color: var(--ink-soft);">A photo of the item or a reference picture helps us find the right match.</p>
+                    <p style="margin-top: 6px; font-size: 12px; color: var(--ink-soft);">Have a photo or reference image? You'll be able to share it with your assigned team member over WhatsApp.</p>
                 </div>
 
                 <div class="form-group">
@@ -1064,13 +1059,11 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="config.js"></script>
 
     <script>
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         // Navigation handling
         document.addEventListener('DOMContentLoaded', function () {
@@ -1142,55 +1135,6 @@
             }
         }
 
-        // Downscale and re-encode an image file as JPEG, stepping the quality
-        // down until it fits under maxBytes (or we hit a quality floor).
-        function compressImage(file, maxBytes = 1024 * 1024, maxDimension = 1600) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                const objectUrl = URL.createObjectURL(file);
-
-                img.onload = () => {
-                    URL.revokeObjectURL(objectUrl);
-
-                    let { width, height } = img;
-                    if (width > maxDimension || height > maxDimension) {
-                        const scale = maxDimension / Math.max(width, height);
-                        width = Math.round(width * scale);
-                        height = Math.round(height * scale);
-                    }
-
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-
-                    let quality = 0.85;
-                    const tryEncode = () => {
-                        canvas.toBlob((blob) => {
-                            if (!blob) {
-                                reject(new Error('Could not process image.'));
-                                return;
-                            }
-                            if (blob.size <= maxBytes || quality <= 0.4) {
-                                resolve(blob);
-                            } else {
-                                quality -= 0.15;
-                                tryEncode();
-                            }
-                        }, 'image/jpeg', quality);
-                    };
-                    tryEncode();
-                };
-
-                img.onerror = () => {
-                    URL.revokeObjectURL(objectUrl);
-                    reject(new Error('Could not read image file.'));
-                };
-
-                img.src = objectUrl;
-            });
-        }
-
         async function submitRequest(e) {
             e.preventDefault(); // Stop form from reloading page
             // Get form values
@@ -1224,37 +1168,9 @@
                 return;
             }
 
-            const photoFile = document.getElementById('photo').files[0];
-            if (photoFile && photoFile.size > 20 * 1024 * 1024) {
-                alert("That photo is too large. Please choose a smaller image.");
-                return;
-            }
-
-            let photoBlob = null;
-            if (photoFile) {
-                try {
-                    photoBlob = await compressImage(photoFile);
-                } catch (error) {
-                    console.error("Error compressing photo:", error);
-                    alert("There was a problem processing that photo. Please try a different image.");
-                    return;
-                }
-            }
-
             try {
-                // Reserve a document ID up front so the photo (if any) can be
-                // uploaded under it before the request document is written
-                const docRef = db.collection("requests").doc();
-
-                let photoUrl = null;
-                if (photoBlob) {
-                    const photoRef = storage.ref(`requestPhotos/${docRef.id}/photo.jpg`);
-                    await photoRef.put(photoBlob, { contentType: 'image/jpeg' });
-                    photoUrl = await photoRef.getDownloadURL();
-                }
-
                 // Add document to Firestore
-                await docRef.set({
+                const docRef = await db.collection("requests").add({
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     name,
                     whatsapp,
@@ -1263,7 +1179,6 @@
                     budget,
                     urgency,
                     consent,
-                    photoUrl,
                     status: 'pending'
                 });
 
