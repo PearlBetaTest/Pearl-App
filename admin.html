@@ -390,6 +390,19 @@
             box-shadow: 2px 3px 0 rgba(34, 29, 20, 0.06);
         }
 
+        .request-photo-link {
+            display: inline-block;
+        }
+
+        .request-photo-thumb {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 3px;
+            border: 1px solid var(--line-strong);
+            display: block;
+        }
+
         .detail-label {
             font-family: 'Space Mono', monospace;
             font-size: 11px;
@@ -1542,6 +1555,14 @@
                 <div class="detail-item">
                     <div class="detail-label">Delivery Notes</div>
                     <div class="detail-value">${escapeHtml(req.deliveryNotes)}</div>
+                </div>
+                ` : ''}
+                ${req.photoUrl ? `
+                <div class="detail-item">
+                    <div class="detail-label">Photo</div>
+                    <a href="${escapeHtml(req.photoUrl)}" target="_blank" class="request-photo-link" title="Click to view full size">
+                        <img src="${escapeHtml(req.photoUrl)}" alt="Request photo" class="request-photo-thumb">
+                    </a>
                 </div>
                 ` : ''}
             </div>
